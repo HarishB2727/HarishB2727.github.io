@@ -696,6 +696,47 @@
             </div>
         </div>
     </section>
+    <section>
+        
+<!-- Add this RIGHT BEFORE the closing </body> tag -->
+<div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+  <!-- Chatbot Toggle Button -->
+  <button id="chatbot-toggle" class="bg-primary text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center hover:bg-primary-light transition-all duration-300 hover:scale-110">
+    <i class="fas fa-robot text-2xl"></i>
+  </button>
+  
+  <!-- Chatbot Popup -->
+  <div id="chatbot-popup" class="hidden absolute bottom-20 right-0 w-80 h-96 bg-dark rounded-lg shadow-2xl border border-gray-700 flex flex-col overflow-hidden">
+    <!-- Chatbot Header -->
+    <div class="bg-darker p-4 border-b border-gray-700 flex items-center">
+      <div class="bg-primary/10 text-primary p-2 rounded-full mr-3">
+        <i class="fas fa-robot"></i>
+      </div>
+      <h3 class="font-semibold">Ask Harish's AI</h3>
+      <button id="close-chatbot" class="ml-auto text-gray-400 hover:text-white">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <!-- Chat Messages Area -->
+    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto text-sm">
+      <div class="bg-darker/50 rounded-lg p-3 mb-3 text-gray-300">
+        <p>Hi! I'm Harish's AI assistant. Ask me anything about his skills, experience, or projects.</p>
+      </div>
+    </div>
+    
+    <!-- User Input Area -->
+    <div class="p-3 border-t border-gray-700 bg-darker">
+      <div class="flex">
+        <input type="text" id="user-message" placeholder="Type your question..." class="flex-1 bg-dark border border-gray-600 rounded-l-lg px-4 py-2 text-white focus:outline-none focus:border-primary">
+        <button id="send-message" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary-light transition">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-darker py-12 border-t border-gray-800">
@@ -737,6 +778,7 @@
     <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-light transition duration-300 opacity-0 invisible transform translate-y-10">
         <i class="fas fa-arrow-up"></i>
     </button>
+    
 
     <script>
         // Mobile Menu Toggle
