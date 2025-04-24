@@ -18,6 +18,16 @@
             --darker: #020617;
             --light: #f8fafc;
         }
+        #visit-count {
+    font-weight: 600;
+    color: var(--primary-light);
+    transition: all 0.3s ease;
+}
+
+#visit-count:hover {
+    color: var(--primary);
+    transform: scale(1.05);
+}
         
         body {
             font-family: 'Manrope', sans-serif;
@@ -773,6 +783,11 @@
                 </div>
             </div>
         </div>
+        <div class="text-center md:text-left mt-4 md:mt-0">
+        <p class="text-gray-500 text-sm">
+            <span id="visit-count">0</span> visitors
+        </p>
+    </div>
     </footer>
 
     <!-- Back to Top Button -->
@@ -816,6 +831,34 @@
     </div>
 
     <script>
+        // Visitor counter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if localStorage is available
+    if (typeof(Storage) !== "undefined") {
+        // Get or initialize visitor count
+        let visitCount = localStorage.getItem('visitCount');
+        
+        if (visitCount) {
+            visitCount = parseInt(visitCount) + 1;
+        } else {
+            visitCount = 1;
+        }
+        
+        localStorage.setItem('visitCount', visitCount);
+        
+        // Update the counter display
+        document.getElementById('visit-count').textContent = visitCount.toLocaleString();
+        
+        // Optional: Get and display first visit date
+        let firstVisit = localStorage.getItem('firstVisit');
+        if (!firstVisit) {
+            firstVisit = new Date().toISOString();
+            localStorage.setItem('firstVisit', firstVisit);
+        }
+    } else {
+        console.log("LocalStorage not supported - visitor counter disabled");
+    }
+});
         // Mobile Menu Toggle
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
