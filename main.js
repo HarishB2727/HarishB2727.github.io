@@ -1,4 +1,4 @@
-
+console.log("JS file loaded!"); 
 // Visitor counter functionality
 document.addEventListener('DOMContentLoaded', function () {
     // Check if localStorage is available
