@@ -198,74 +198,6 @@ const systemPrompt = `
         and also always give short and crispy answers not lenghty responses
     `;
 
-// Send message function
-async function sendChatMessage() {
-    const message = userMessage.value.trim();
-    if (!message) return;
-
-    // Add user message to chat
-    addMessage(message, 'user');
-    userMessage.value = '';
-
-    // Show "typing" indicator
-    const typingIndicator = addMessage('Typing...', 'bot', true);
-
-    try {
-        // Call DeepSeek API
-        const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${"sk-8376334f0a034641bbfe3f27dbe125c4"}` // Replace with your actual API key
-            },
-            body: JSON.stringify({
-                model: "deepseek-chat",
-                messages: [
-                    { role: "system", content: systemPrompt },
-                    { role: "user", content: message }
-                ],
-                temperature: 0.7
-            })
-        });
-
-        const data = await response.json();
-        const aiResponse = data.choices[0].message.content;
-
-        // Replace typing indicator with actual response
-        typingIndicator.remove();
-        addMessage(aiResponse, 'bot');
-
-    } catch (error) {
-        typingIndicator.remove();
-        const errorDiv = addMessage("Sorry, I couldn't process your request. Please try again.", 'bot');
-        errorDiv.firstChild.classList.add('error-message');
-        console.error("API Error:", error);
-    }
-}
-
-// Add message to chat UI
-function addMessage(content, sender, isTemporary = false) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-
-    const bubble = document.createElement('div');
-    bubble.className = `${sender === 'user' ? 'user-message' : 'bot-message'} rounded-lg p-3 max-w-[80%]`;
-    bubble.textContent = content;
-
-    messageDiv.appendChild(bubble);
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    return isTemporary ? messageDiv : null;
-}
-
-// Event listeners
-sendMessage.addEventListener('click', sendChatMessage);
-userMessage.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendChatMessage();
-});
-// At the bottom of your existing JavaScript, add this:
-
 // Show chatbot popup after page loads
 window.addEventListener('load', () => {
     // Show the popup
@@ -474,4 +406,169 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.animate-on-scroll').forEach(element => {
     observer.observe(element);
+});
+
+// Job Posting Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const jobForm = document.getElementById('job-form');
+    const jobListings = document.getElementById('job-listings');
+
+    // Load existing jobs from localStorage
+    loadJobs();
+
+    // Handle form submission
+    jobForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const jobData = {
+            title: document.getElementById('job-title').value,
+            company: document.getElementById('company-name').value,
+            description: document.getElementById('job-description').value,
+            email: document.getElementById('contact-email').value,
+            timestamp: new Date().getTime()
+        };
+
+        // Save job to localStorage
+        saveJob(jobData);
+        
+        // Clear form
+        jobForm.reset();
+
+        // Refresh job listings
+        loadJobs();
+    });
+
+    // Function to save job to localStorage
+    function saveJob(jobData) {
+        let jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+        jobs.push(jobData);
+        localStorage.setItem('jobs', JSON.stringify(jobs));
+    }
+
+    // Function to load and display jobs
+    function loadJobs() {
+        let jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+        const currentTime = new Date().getTime();
+        
+        // Filter out jobs older than 24 hours
+        jobs = jobs.filter(job => {
+            const jobAge = currentTime - job.timestamp;
+            return jobAge < 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        });
+        
+        // Save filtered jobs back to localStorage
+        localStorage.setItem('jobs', JSON.stringify(jobs));
+
+        // Clear current listings
+        jobListings.innerHTML = '';
+
+        // Display jobs
+        jobs.forEach(job => {
+            const jobElement = createJobElement(job);
+            jobListings.appendChild(jobElement);
+        });
+    }
+
+    // Function to create job listing element
+    function createJobElement(job) {
+        const jobDiv = document.createElement('div');
+        jobDiv.className = 'glass-effect p-6 rounded-lg hover:transform hover:scale-105 transition duration-300';
+        
+        const timeAgo = getTimeAgo(job.timestamp);
+        
+        jobDiv.innerHTML = `
+            <h3 class="text-xl font-semibold text-primary-light mb-2">${job.title}</h3>
+            <p class="text-gray-300 mb-2">${job.company}</p>
+            <p class="text-gray-400 mb-4">${job.description}</p>
+            <div class="flex justify-between items-center">
+                <a href="mailto:${job.email}" class="text-primary hover:text-primary-light transition duration-300">
+                    <i class="fas fa-envelope mr-2"></i>Contact
+                </a>
+                <span class="text-gray-400 text-sm">${timeAgo}</span>
+            </div>
+        `;
+        
+        return jobDiv;
+    }
+
+    // Function to format time ago
+    function getTimeAgo(timestamp) {
+        const seconds = Math.floor((new Date().getTime() - timestamp) / 1000);
+        
+        let interval = Math.floor(seconds / 3600);
+        if (interval < 24) {
+            return interval === 1 ? '1 hour ago' : `${interval} hours ago`;
+        }
+        return '1 day ago';
+    }
+
+    // Set up periodic refresh of job listings (every 5 minutes)
+    setInterval(loadJobs, 5 * 60 * 1000);
+});
+
+// Send message function
+async function sendChatMessage() {
+    const message = userMessage.value.trim();
+    if (!message) return;
+
+    // Add user message to chat
+    addMessage(message, 'user');
+    userMessage.value = '';
+
+    // Show "typing" indicator
+    const typingIndicator = addMessage('Typing...', 'bot', true);
+
+    try {
+        // Call DeepSeek API
+        const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${"sk-8376334f0a034641bbfe3f27dbe125c4"}` // Replace with your actual API key
+            },
+            body: JSON.stringify({
+                model: "deepseek-chat",
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: message }
+                ],
+                temperature: 0.7
+            })
+        });
+
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+
+        // Replace typing indicator with actual response
+        typingIndicator.remove();
+        addMessage(aiResponse, 'bot');
+
+    } catch (error) {
+        typingIndicator.remove();
+        const errorDiv = addMessage("Sorry, I couldn't process your request. Please try again.", 'bot');
+        errorDiv.firstChild.classList.add('error-message');
+        console.error("API Error:", error);
+    }
+}
+
+// Add message to chat UI
+function addMessage(content, sender, isTemporary = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
+    const bubble = document.createElement('div');
+    bubble.className = `${sender === 'user' ? 'user-message' : 'bot-message'} rounded-lg p-3 max-w-[80%]`;
+    bubble.textContent = content;
+
+    messageDiv.appendChild(bubble);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    return isTemporary ? messageDiv : null;
+}
+
+// Event listeners
+sendMessage.addEventListener('click', sendChatMessage);
+userMessage.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendChatMessage();
 });
