@@ -1,32 +1,3 @@
-// Visitor counter functionality
-document.addEventListener('DOMContentLoaded', function () {
-    // Check if localStorage is available
-    if (typeof (Storage) !== "undefined") {
-        // Get or initialize visitor count
-        let visitCount = localStorage.getItem('visitCount');
-
-        if (visitCount) {
-            visitCount = parseInt(visitCount) + 1;
-        } else {
-            visitCount = 1;
-        }
-
-        localStorage.setItem('visitCount', visitCount);
-
-        // Update the counter display
-        document.getElementById('visit-count').textContent = visitCount.toLocaleString();
-
-        // Optional: Get and display first visit date
-        let firstVisit = localStorage.getItem('firstVisit');
-        if (!firstVisit) {
-            firstVisit = new Date().toISOString();
-            localStorage.setItem('firstVisit', firstVisit);
-        }
-    } else {
-        console.log("LocalStorage not supported - visitor counter disabled");
-    }
-});
-
 // Mobile Menu Toggle
 const menuBtn = document.getElementById('menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
