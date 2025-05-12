@@ -926,29 +926,9 @@
                 </div>
             </div>
             <div class="text-center md:text-left mt-4 md:mt-0">
-                <div class="fixed bottom-4 left-4 bg-darker/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg z-50 group">
-                    <p class="text-gray-200 text-sm flex items-center cursor-help">
-                        <i class="fas fa-users mr-2 text-primary-light"></i>
-                        <span id="visit-count" class="font-medium">0</span> visitors
-                    </p>
-                    <!-- Tooltip with detailed stats -->
-                    <div class="absolute bottom-full left-0 mb-2 w-64 bg-[#101624] p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Today:</span>
-                                <span id="today-count" class="text-primary-light font-medium">0</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">This Week:</span>
-                                <span id="week-count" class="text-primary-light font-medium">0</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Last 30 Days:</span>
-                                <span id="month-count" class="text-primary-light font-medium">0</span>
-                            </div>
-                            <div class="h-20 mt-2" id="visitor-chart"></div>
-                        </div>
-                    </div>
+                <div class="fixed bottom-4 left-4 bg-darker/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg z-50 flex items-center">
+                    <i class="fas fa-users mr-2 text-primary-light"></i>
+                    <span class="text-primary-light font-medium" data-goatcounter-click="total"></span> visitors
                 </div>
             </div>
         </footer>
