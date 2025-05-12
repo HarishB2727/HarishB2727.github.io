@@ -1,4 +1,3 @@
-console.log("JS file loaded!"); 
 // Visitor counter functionality
 document.addEventListener('DOMContentLoaded', function () {
     // Check if localStorage is available
@@ -27,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("LocalStorage not supported - visitor counter disabled");
     }
 });
+
 // Mobile Menu Toggle
 const menuBtn = document.getElementById('menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
@@ -109,7 +109,6 @@ const animateOnScroll = () => {
         const elementTop = element.getBoundingClientRect().top + windowTop;
         const elementBottom = elementTop + element.offsetHeight;
 
-        // Check if element is in viewport
         if (elementBottom >= windowTop && elementTop <= windowBottom) {
             element.classList.add('visible');
         }
@@ -172,128 +171,39 @@ closeChatbot.addEventListener('click', () => {
     chatbotPopup.classList.add('hidden');
 });
 
-// System prompt about Harish (customize this!)
+// System prompt about Harish
 const systemPrompt = `
-        You are Harish Bejawada's personal AI assistant. Answer all questions specifically about Harish using the following information:
-        
-        - Full Name: Harish Bejawada
-        - Current Role: Software Engineer at PTC Global (since Jan 2025)
-        - Previous Experience: 
-          * Software Developer at Cognizant Pvt Ltd (Feb 2022-Jan 2024)
-          * Java Programmer at Gandhi Institute of Technology and Management (2021-2022)
-        - Skills: JavaScript/TypeScript (92%), React/Next.js (88%), Node.js/Express (85%), GraphQL/REST (83%)
-        - Education: Bachelor's in Computer Science
-        - Location: New York, US
-        - Email: b.harish2727@gmail.com
-        - Phone: +1 (716) 335-1329
-        - Key Achievements:
-          * Reduced telemetry latency by 38% at PTC Global
-          * Refactored monolithic apps into microservices (3x faster deployment)
-          * Created real-time exam engine with 99.8% uptime
-        - friends:
-            keerthana
-            rama- he is akhila's boy friend
-        Always respond in first-person as if you are Harish (use "I" and "my"). Be professional but friendly.
-        If asked why someone should hire you, highlight your problem-solving skills and technical expertise.
-        and also always give short and crispy answers not lenghty responses
-    `;
+    You are Harish Bejawada's personal AI assistant. Answer all questions specifically about Harish using the following information:
+    
+    - Full Name: Harish Bejawada
+    - Current Role: Software Engineer at PTC Global (since Jan 2025)
+    - Previous Experience: 
+      * Software Developer at Cognizant Pvt Ltd (Feb 2022-Jan 2024)
+      * Java Programmer at Gandhi Institute of Technology and Management (2021-2022)
+    - Skills: JavaScript/TypeScript (92%), React/Next.js (88%), Node.js/Express (85%), GraphQL/REST (83%)
+    - Education: Bachelor's in Computer Science
+    - Location: New York, US
+    - Email: b.harish2727@gmail.com
+    - Phone: +1 (716) 335-1329
+    - Key Achievements:
+      * Reduced telemetry latency by 38% at PTC Global
+      * Refactored monolithic apps into microservices (3x faster deployment)
+      * Created real-time exam engine with 99.8% uptime
+    - friends:
+        keerthana
+        rama- he is akhila's boy friend
+    Always respond in first-person as if you are Harish (use "I" and "my"). Be professional but friendly.
+    If asked why someone should hire you, highlight your problem-solving skills and technical expertise.
+    and also always give short and crispy answers not lenghty responses
+`;
 
 // Show chatbot popup after page loads
 window.addEventListener('load', () => {
-    // Show the popup
     chatbotPopup.classList.remove('hidden');
-
-    // Add a slight delay before showing welcome message for better UX
     setTimeout(() => {
-        // Scroll to bottom of chat
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }, 300);
 });
-
-// Remove the initial "hidden" class from the popup if you haven't already
-chatbotPopup.classList.remove('hidden');
-
-// Three.js Scene Setup
-let scene, camera, renderer, particles;
-const particleCount = 5000; // Increased particle count
-
-function initThreeJS() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0); // Transparent background
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-    // Create particles
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const sizes = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 20;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
-
-        colors[i * 3] = 0.5 + Math.random() * 0.5; // R
-        colors[i * 3 + 1] = 0.5 + Math.random() * 0.5; // G
-        colors[i * 3 + 2] = 0.5 + Math.random() * 0.5; // B
-
-        sizes[i] = 0.1 + Math.random() * 0.2; // Random sizes
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-    const material = new THREE.PointsMaterial({
-        size: 0.1,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8,
-        sizeAttenuation: true
-    });
-
-    particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    camera.position.z = 15;
-
-    // Mouse interaction
-    const mouse = new THREE.Vector2();
-    const target = new THREE.Vector2();
-    const windowHalf = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-
-    document.addEventListener('mousemove', (event) => {
-        mouse.x = (event.clientX - windowHalf.x) * 0.001;
-        mouse.y = (event.clientY - windowHalf.y) * 0.001;
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        windowHalf.set(window.innerWidth / 2, window.innerHeight / 2);
-    });
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    
-    target.x += (mouse.x - target.x) * 0.05;
-    target.y += (mouse.y - target.y) * 0.05;
-    
-    particles.rotation.x += 0.0005 + target.y * 0.0005;
-    particles.rotation.y += 0.0005 + target.x * 0.0005;
-    
-    renderer.render(scene, camera);
-}
-
-// Initialize Three.js
-initThreeJS();
-animate();
 
 // GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
@@ -328,24 +238,6 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
-// Smooth scroll for navigation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            gsap.to(window, {
-                duration: 1,
-                scrollTo: {
-                    y: target,
-                    offsetY: 80
-                },
-                ease: "power2.inOut"
-            });
-        }
-    });
-});
-
 // Mouse move effect for 3D cards
 document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -356,14 +248,14 @@ document.querySelectorAll('.project-card').forEach(card => {
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
         
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
     
     card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
     });
 });
 
@@ -395,15 +287,6 @@ const observerOptions = {
     threshold: 0.1
 };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
 document.querySelectorAll('.animate-on-scroll').forEach(element => {
     observer.observe(element);
 });
@@ -413,30 +296,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const jobForm = document.getElementById('job-form');
     const jobListings = document.getElementById('job-listings');
 
-    // Load existing jobs from localStorage
-    loadJobs();
-
-    // Handle form submission
-    jobForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const jobData = {
-            title: document.getElementById('job-title').value,
-            company: document.getElementById('company-name').value,
-            description: document.getElementById('job-description').value,
-            email: document.getElementById('contact-email').value,
-            timestamp: new Date().getTime()
-        };
-
-        // Save job to localStorage
-        saveJob(jobData);
-        
-        // Clear form
-        jobForm.reset();
-
-        // Refresh job listings
+    if (jobForm && jobListings) {
+        // Load existing jobs from localStorage
         loadJobs();
-    });
+
+        // Handle form submission
+        jobForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const jobData = {
+                title: document.getElementById('job-title')?.value || '',
+                company: document.getElementById('company-name')?.value || '',
+                description: document.getElementById('job-description')?.value || '',
+                email: document.getElementById('contact-email')?.value || '',
+                timestamp: new Date().getTime()
+            };
+
+            // Save job to localStorage
+            saveJob(jobData);
+            
+            // Clear form
+            jobForm.reset();
+
+            // Refresh job listings
+            loadJobs();
+        });
+    }
 
     // Function to save job to localStorage
     function saveJob(jobData) {
@@ -447,6 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to load and display jobs
     function loadJobs() {
+        if (!jobListings) return;
+        
         let jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
         const currentTime = new Date().getTime();
         
@@ -458,9 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Save filtered jobs back to localStorage
         localStorage.setItem('jobs', JSON.stringify(jobs));
-
-        // Clear current listings
-        jobListings.innerHTML = '';
 
         // Display jobs
         jobs.forEach(job => {

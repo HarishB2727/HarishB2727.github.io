@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harish Bejawada | Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="main.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,24 +48,7 @@
             background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             position: relative;
-        }
-
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        #canvas-container canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            min-height: 100vh;
         }
 
         .hero-gradient {
@@ -108,23 +90,52 @@
         }
         
         .project-card {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(20px);
-            opacity: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.5);
             border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+            box-shadow: none;
+            color: #fff;
+            padding: 1.5rem;
+            opacity: 1 !important;
+            transform: none !important;
         }
-        
-        .project-card.animate {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
         .project-card:hover {
-            transform: translateY(-8px) !important;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
             border-color: rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+        .project-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .project-card .flex.flex-wrap.gap-2 span,
+        .project-card .flex.flex-wrap.gap-2 .tag {
+            display: inline-block;
+            background: #23263a;
+            color: #a5b4fc;
+            border-radius: 9999px;
+            padding: 0.4em 1.1em;
+            font-size: 1rem;
+            margin-right: 0.5em;
+            margin-bottom: 0.3em;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        .project-card .flex.flex-wrap.gap-2 .tag {
+            background: #23263a;
+            color: #a5b4fc;
+        }
+        .project-card .flex.space-x-2 a {
+            color: #a5b4fc;
+            font-size: 1.2em;
+            margin-left: 0.5em;
+            transition: color 0.2s;
+        }
+        .project-card .flex.space-x-2 a:hover {
+            color: #6366f1;
         }
         
         .nav-link {
@@ -219,14 +230,9 @@
         }
         
         .animate-text {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        
-        .animate-text.visible {
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
         }
         
         .animate-delay-1 {
@@ -381,8 +387,6 @@
     </style>
 </head>
 <body class="bg-dots">
-    <div id="canvas-container" class="fixed top-0 left-0 w-full h-full -z-10"></div>
-    <div class="relative z-10">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-500 glass-effect">
         <div class="container mx-auto px-6 py-4">
@@ -416,33 +420,38 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20" style="background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9InJnYmEoMCwwLDAsMC4yKSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')"></div>
-        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center relative z-10">
-            <div class="md:w-1/2 mb-12 md:mb-0">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 font-display animate-text">Hi, I'm <span class="text-gradient">Harish Bejawada</span></h1>
-                <h2 class="text-xl md:text-2xl text-gray-300 mb-6 animate-text animate-delay-1">Software Engineer</h2>
-                <p class="text-lg text-gray-400 mb-8 max-w-lg animate-text animate-delay-2">Crafting elegant digital experiences with clean code and thoughtful design.</p>
-                <div class="flex space-x-4 animate-text animate-delay-3">
-                    <a href="#contact" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-light transition duration-300 btn-hover">
-                        <span class="relative flex items-center">
-                            <i class="fas fa-paper-plane mr-2"></i> Get in Touch
-                        </span>
-                    </a>
-                    <a href="#projects" class="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg font-medium hover:border-primary hover:text-white transition duration-300 btn-hover">
-                        <span class="relative flex items-center">
-                            <i class="fas fa-eye mr-2"></i> View Work
-                        </span>
-                    </a>
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section id="home" class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20" style="background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9InJnYmEoMCwwLDAsMC4yKSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')"></div>
+            <div class="container mx-auto px-6 flex flex-col md:flex-row items-center relative z-10">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-4 font-display animate-text">
+                        Hi, I'm <span class="text-gradient">Harish Bejawada</span>
+                    </h1>
+                    <h2 class="text-xl md:text-2xl text-gray-300 mb-6 animate-text animate-delay-1">Software Engineer</h2>
+                    <p class="text-lg text-gray-400 mb-8 max-w-lg animate-text animate-delay-2">
+                        Crafting elegant digital experiences with clean code and thoughtful design.
+                    </p>
+                    <div class="flex space-x-4 animate-text animate-delay-3">
+                        <a href="#contact" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-light transition duration-300 btn-hover">
+                            <span class="relative flex items-center">
+                                <i class="fas fa-paper-plane mr-2"></i> Get in Touch
+                            </span>
+                        </a>
+                        <a href="#projects" class="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg font-medium hover:border-primary hover:text-white transition duration-300 btn-hover">
+                            <span class="relative flex items-center">
+                                <i class="fas fa-eye mr-2"></i> View Work
+                            </span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="md:w-1/2 flex justify-center">
-                <div class="relative w-64 h-64 md:w-72 md:h-72">
-                    <div class="absolute inset-0 bg-primary rounded-full opacity-20 floating" style="animation-delay: 0.2s;"></div>
-                    <div class="absolute inset-4 bg-primary rounded-full opacity-20 floating" style="animation-delay: 0.4s;"></div>
-                    <div class="absolute inset-8 bg-primary rounded-full opacity-20 floating" style="animation-delay: 0.6s;"></div>
-                    <img src="harish_profile.png" 
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-64 h-64 md:w-72 md:h-72">
+                        <div class="absolute inset-0 bg-primary rounded-full opacity-20 floating" style="animation-delay: 0.2s;"></div>
+                        <div class="absolute inset-4 bg-primary rounded-full opacity-20 floating" style="animation-delay: 0.4s;"></div>
+                        <div class="absolute inset-8 bg-primary rounded-full opacity-20 floating" style="animation-delay: 0.6s;"></div>
+                        <img src="harish_profile.png" 
      alt="Harish Bejawada Profile Photo"
      style="
         position: relative;
@@ -456,509 +465,510 @@
      "
      onmouseover="this.style.transform='scale(1.05)'"
      onmouseout="this.style.transform='scale(1)'">
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-dark/90 backdrop-blur-sm">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">About Me</h2>
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/3 mb-10 md:mb-0 flex justify-center animate-text animate-delay-1">
-                    <div class="relative">
-<!--                         <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80" 
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-dark/90 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">About Me</h2>
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-10 md:mb-0 flex justify-center animate-text animate-delay-1">
+                        <div class="relative">
+    <!--                         <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80" 
                              alt="About Me" 
                              class="rounded-lg shadow-xl w-64 h-64 md:w-72 md:h-72 object-cover hover-grow"> -->
-                        <div class="absolute -bottom-4 -right-4 bg-primary text-white p-3 rounded-full shadow-lg pulse">
-                            <i class="fas fa-code text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-2/3 md:pl-12">
-                    <h3 class="text-2xl font-semibold mb-4 font-display animate-text animate-delay-2">Who am I?</h3>
-                    <p class="text-gray-400 mb-6 text-lg animate-text animate-delay-3">
-                        I'm a <span class="text-gradient font-medium">Full-Stack Software Engineer</span> with over 3.5 years of experience crafting scalable, cloud-native applications. I specialize in Java, Python, React, and AWS, and I'm passionate about building systems that are both performant and human-friendly. I enjoy solving real-world problems with code — whether it's designing backend microservices or exploring the potential of AI/ML in everyday applications.
-                    </p>
-                    <p class="text-gray-400 mb-8 text-lg animate-text animate-delay-4">
-                        When I'm not coding, you can find me exploring new design trends, contributing to open source, or hiking in the mountains. I believe in continuous learning and pushing the boundaries of what's possible on the web.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate-text animate-delay-5">
-                        <div>
-                            <p class="font-medium text-gray-300">Name: <span class="font-normal text-gray-400">Harish Bejawada</span></p>
-                            <p class="font-medium text-gray-300">Email: <span class="font-normal text-gray-400">b.harish2727@gmail.com</span></p>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-300">Location: <span class="font-normal text-gray-400">NewYork, US</span></p>
-                            <p class="font-medium text-gray-300">Availability: <span class="font-normal text-gray-400">Open to opportunities</span></p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-4 animate-text animate-delay-6">
-                        <a href="Harish_Bejawada_SE.pdf" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-light transition duration-300 flex items-center btn-hover" download >
-                            <i class="fas fa-download mr-3"></i> Download CV
-                        </a>
-                        <a href="#contact" class="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg hover:border-primary hover:text-white transition duration-300 flex items-center">
-                            <i class="fas fa-envelope mr-3"></i> Contact Me
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-darker/90 backdrop-blur-sm">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">My Skills</h2>
-            
-            <!-- Skills Categories -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Front End Skills -->
-                <div class="skill-category group">
-                    <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                            <div class="absolute -bottom-4 -right-4 bg-primary text-white p-3 rounded-full shadow-lg pulse">
                                 <i class="fas fa-code text-xl"></i>
                             </div>
-                            <h3 class="text-xl font-semibold font-display">Front End</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">HTML5</span>
-                            <span class="skill-tag">CSS</span>
-                            <span class="skill-tag">JavaScript</span>
-                            <span class="skill-tag">TypeScript</span>
-                            <span class="skill-tag">React JS</span>
-                            <span class="skill-tag">Angular</span>
-                            <span class="skill-tag">AJAX</span>
-                            <span class="skill-tag">Tailwind CSS</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Back End Skills -->
-                <div class="skill-category group">
-                    <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                <i class="fas fa-server text-xl"></i>
+                    <div class="md:w-2/3 md:pl-12">
+                        <h3 class="text-2xl font-semibold mb-4 font-display animate-text animate-delay-2">Who am I?</h3>
+                        <p class="text-gray-400 mb-6 text-lg animate-text animate-delay-3">
+                            I'm a <span class="text-gradient font-medium">Full-Stack Software Engineer</span> with over 3.5 years of experience crafting scalable, cloud-native applications. I specialize in Java, Python, React, and AWS, and I'm passionate about building systems that are both performant and human-friendly. I enjoy solving real-world problems with code — whether it's designing backend microservices or exploring the potential of AI/ML in everyday applications.
+                        </p>
+                        <p class="text-gray-400 mb-8 text-lg animate-text animate-delay-4">
+                            When I'm not coding, you can find me exploring new design trends, contributing to open source, or hiking in the mountains. I believe in continuous learning and pushing the boundaries of what's possible on the web.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate-text animate-delay-5">
+                            <div>
+                                <p class="font-medium text-gray-300">Name: <span class="font-normal text-gray-400">Harish Bejawada</span></p>
+                                <p class="font-medium text-gray-300">Email: <span class="font-normal text-gray-400">b.harish2727@gmail.com</span></p>
                             </div>
-                            <h3 class="text-xl font-semibold font-display">Back End</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">Java/J2EE</span>
-                            <span class="skill-tag">C</span>
-                            <span class="skill-tag">C++</span>
-                            <span class="skill-tag">C#</span>
-                            <span class="skill-tag">Node</span>
-                            <span class="skill-tag">PHP</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Databases & Methodologies -->
-                <div class="skill-category group">
-                    <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                <i class="fas fa-database text-xl"></i>
+                            <div>
+                                <p class="font-medium text-gray-300">Location: <span class="font-normal text-gray-400">NewYork, US</span></p>
+                                <p class="font-medium text-gray-300">Availability: <span class="font-normal text-gray-400">Open to opportunities</span></p>
                             </div>
-                            <h3 class="text-xl font-semibold font-display">Databases & Methodologies</h3>
                         </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">MySQL</span>
-                            <span class="skill-tag">PostgreSQL</span>
-                            <span class="skill-tag">Oracle</span>
-                            <span class="skill-tag">MongoDB</span>
-                            <span class="skill-tag">Agile</span>
-                            <span class="skill-tag">Scrum</span>
-                            <span class="skill-tag">SDLC</span>
-                            <span class="skill-tag">TDD</span>
-                            <span class="skill-tag">Redis</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Frameworks & Technologies -->
-                <div class="skill-category group">
-                    <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                <i class="fas fa-cubes text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold font-display">Frameworks & Technologies</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">Django</span>
-                            <span class="skill-tag">Spring Boot</span>
-                            <span class="skill-tag">JPA</span>
-                            <span class="skill-tag">Hibernate</span>
-                            <span class="skill-tag">Microservices</span>
-                            <span class="skill-tag">REST APIs</span>
-                            <span class="skill-tag">Kafka</span>
-                            <span class="skill-tag">Linux</span>
-                            <span class="skill-tag">Spring MVC</span>
-                            <span class="skill-tag">Ruby on Rails</span>
-                            <span class="skill-tag">Next.js</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tools -->
-                <div class="skill-category group">
-                    <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                <i class="fas fa-tools text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold font-display">Tools</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">GitHub</span>
-                            <span class="skill-tag">Jenkins</span>
-                            <span class="skill-tag">JIRA</span>
-                            <span class="skill-tag">Docker</span>
-                            <span class="skill-tag">Kubernetes</span>
-                            <span class="skill-tag">SonarQube</span>
-                            <span class="skill-tag">Maven</span>
-                            <span class="skill-tag">JUnit</span>
-                            <span class="skill-tag">VSCode</span>
-                            <span class="skill-tag">Postman</span>
-                            <span class="skill-tag">IntelliJ</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AWS & Additional Skills -->
-                <div class="skill-category group">
-                    <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                <i class="fab fa-aws text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold font-display">AWS & Additional Skills</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">ECS</span>
-                            <span class="skill-tag">Lambda</span>
-                            <span class="skill-tag">EC2</span>
-                            <span class="skill-tag">SQS</span>
-                            <span class="skill-tag">S3</span>
-                            <span class="skill-tag">VPC</span>
-                            <span class="skill-tag">OOP</span>
-                            <span class="skill-tag">Multi-threading</span>
-                            <span class="skill-tag">Data Structures</span>
-                            <span class="skill-tag">Design Patterns</span>
-                            <span class="skill-tag">SOLID</span>
+                        <div class="flex flex-wrap gap-4 animate-text animate-delay-6">
+                            <a href="Harish_Bejawada_SE.pdf" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-light transition duration-300 flex items-center btn-hover" download >
+                                <i class="fas fa-download mr-3"></i> Download CV
+                            </a>
+                            <a href="#contact" class="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg hover:border-primary hover:text-white transition duration-300 flex items-center">
+                                <i class="fas fa-envelope mr-3"></i> Contact Me
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-dark/90 backdrop-blur-sm">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">Featured Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1 -->
-                <div class="project-card group relative overflow-hidden rounded-xl p-6 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl" style="transform-style: preserve-3d; perspective: 1000px;">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">TaskFlow</h3>
-                            <div class="flex space-x-2">
-                                <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-darker/90 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">My Skills</h2>
+                
+                <!-- Skills Categories -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Front End Skills -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-code text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Front End</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">HTML5</span>
+                                <span class="skill-tag">CSS</span>
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">React JS</span>
+                                <span class="skill-tag">Angular</span>
+                                <span class="skill-tag">AJAX</span>
+                                <span class="skill-tag">Tailwind CSS</span>
                             </div>
                         </div>
-                        <p class="text-gray-400 mb-4">A collaborative task management tool with real-time updates and team features.</p>
-                        <div class="flex flex-wrap gap-2">
+                    </div>
+
+                    <!-- Back End Skills -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-server text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Back End</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">Java/J2EE</span>
+                                <span class="skill-tag">C</span>
+                                <span class="skill-tag">C++</span>
+                                <span class="skill-tag">C#</span>
+                                <span class="skill-tag">Node</span>
+                                <span class="skill-tag">PHP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Databases & Methodologies -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-database text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Databases & Methodologies</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">MySQL</span>
+                                <span class="skill-tag">PostgreSQL</span>
+                                <span class="skill-tag">Oracle</span>
+                                <span class="skill-tag">MongoDB</span>
+                                <span class="skill-tag">Agile</span>
+                                <span class="skill-tag">Scrum</span>
+                                <span class="skill-tag">SDLC</span>
+                                <span class="skill-tag">TDD</span>
+                                <span class="skill-tag">Redis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frameworks & Technologies -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-cubes text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Frameworks & Technologies</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Django</span>
+                                <span class="skill-tag">Spring Boot</span>
+                                <span class="skill-tag">JPA</span>
+                                <span class="skill-tag">Hibernate</span>
+                                <span class="skill-tag">Microservices</span>
+                                <span class="skill-tag">REST APIs</span>
+                                <span class="skill-tag">Kafka</span>
+                                <span class="skill-tag">Linux</span>
+                                <span class="skill-tag">Spring MVC</span>
+                                <span class="skill-tag">Ruby on Rails</span>
+                                <span class="skill-tag">Next.js</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-tools text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Tools</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">GitHub</span>
+                                <span class="skill-tag">Jenkins</span>
+                                <span class="skill-tag">JIRA</span>
+                                <span class="skill-tag">Docker</span>
+                                <span class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">SonarQube</span>
+                                <span class="skill-tag">Maven</span>
+                                <span class="skill-tag">JUnit</span>
+                                <span class="skill-tag">VSCode</span>
+                                <span class="skill-tag">Postman</span>
+                                <span class="skill-tag">IntelliJ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AWS & Additional Skills -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fab fa-aws text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">AWS & Additional Skills</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">ECS</span>
+                                <span class="skill-tag">Lambda</span>
+                                <span class="skill-tag">EC2</span>
+                                <span class="skill-tag">SQS</span>
+                                <span class="skill-tag">S3</span>
+                                <span class="skill-tag">VPC</span>
+                                <span class="skill-tag">OOP</span>
+                                <span class="skill-tag">Multi-threading</span>
+                                <span class="skill-tag">Data Structures</span>
+                                <span class="skill-tag">Design Patterns</span>
+                                <span class="skill-tag">SOLID</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 bg-dark/90 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">Featured Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project 1 -->
+                    <div class="project-card group relative overflow-hidden rounded-xl p-6 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl" style="transform-style: preserve-3d; perspective: 1000px;">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">TaskFlow</h3>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 mb-4">A collaborative task management tool with real-time updates and team features.</p>
+                            <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">React</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Firebase</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Tailwind</span>
                         </div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                </div>
-                
-                <!-- Project 2 -->
-                <div class="project-card group relative overflow-hidden rounded-xl p-6 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl" style="transform-style: preserve-3d; perspective: 1000px;">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">NexusShop</h3>
-                            <div class="flex space-x-2">
-                                <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
                         </div>
-                        <p class="text-gray-400 mb-4">Full-featured e-commerce solution with payment integration and admin dashboard.</p>
-                        <div class="flex flex-wrap gap-2">
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="project-card group relative overflow-hidden rounded-xl p-6 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl" style="transform-style: preserve-3d; perspective: 1000px;">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">NexusShop</h3>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 mb-4">Full-featured e-commerce solution with payment integration and admin dashboard.</p>
+                            <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Next.js</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Node.js</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">MongoDB</span>
                         </div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                </div>
-                
-                <!-- Project 3 -->
-                <div class="project-card group relative overflow-hidden rounded-xl p-6 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl" style="transform-style: preserve-3d; perspective: 1000px;">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">SocialPulse</h3>
-                            <div class="flex space-x-2">
-                                <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
                         </div>
-                        <p class="text-gray-400 mb-4">Comprehensive analytics platform for tracking social media performance.</p>
-                        <div class="flex flex-wrap gap-2">
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                    </div>
+                    
+                    <!-- Project 3 -->
+                    <div class="project-card group relative overflow-hidden rounded-xl p-6 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl" style="transform-style: preserve-3d; perspective: 1000px;">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">SocialPulse</h3>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 mb-4">Comprehensive analytics platform for tracking social media performance.</p>
+                            <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">React</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">D3.js</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Express</span>
                         </div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                     </div>
-                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                </div>
+                <div class="text-center mt-12 animate-text animate-delay-4">
+                    <a href="#" class="inline-block border border-gray-600 text-gray-300 px-6 py-3 rounded-lg font-medium hover:border-primary hover:text-white transition duration-300">
+                        View All Projects
+                    </a>
                 </div>
             </div>
-            <div class="text-center mt-12 animate-text animate-delay-4">
-                <a href="#" class="inline-block border border-gray-600 text-gray-300 px-6 py-3 rounded-lg font-medium hover:border-primary hover:text-white transition duration-300">
-                    View All Projects
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 bg-darker/90 backdrop-blur-sm">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">Work Experience</h2>
-            <div class="relative pl-8 md:pl-16">
-                <div class="timeline relative">
-                    <!-- Experience 1 -->
-                    <div class="timeline-item relative pl-8 pb-12 animate-text animate-delay-1">
-                        <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
-                            <div class="flex flex-col md:flex-row md:items-center mb-4">
-                                <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Nov 2024 - Present</span>
-                                <h3 class="text-xl font-semibold font-display">Software Engineer</h3>
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 bg-darker/90 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">Work Experience</h2>
+                <div class="relative pl-8 md:pl-16">
+                    <div class="timeline relative">
+                        <!-- Experience 1 -->
+                        <div class="timeline-item relative pl-8 pb-12 animate-text animate-delay-1">
+                            <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
+                                <div class="flex flex-col md:flex-row md:items-center mb-4">
+                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Nov 2024 - Present</span>
+                                    <h3 class="text-xl font-semibold font-display">Software Engineer</h3>
+                                </div>
+                                <h4 class="text-lg text-primary mb-4">PTC Global</h4>
+                                <p class="text-gray-400 text-sm">
+                                    Built and deployed scalable microservices and predictive fault detection models. Reduced telemetry latency by 38%, optimized system load handling, and automated CI/CD workflows for faster deployment and recovery.
+                                </p>
                             </div>
-                            <h4 class="text-lg text-primary mb-4">PTC Global</h4>
-                            <p class="text-gray-400 text-sm">
-                                Built and deployed scalable microservices and predictive fault detection models. Reduced telemetry latency by 38%, optimized system load handling, and automated CI/CD workflows for faster deployment and recovery.
-                            </p>
                         </div>
-                    </div>
-                    
-                    <!-- Experience 2 -->
-                    <div class="timeline-item relative pl-8 pb-12 animate-text animate-delay-2">
-                        <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
-                            <div class="flex flex-col md:flex-row md:items-center mb-4">
-                                <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Feb 2022 - Jan 2024</span>
-                                <h3 class="text-xl font-semibold font-display">Software Developer</h3>
+                        
+                        <!-- Experience 2 -->
+                        <div class="timeline-item relative pl-8 pb-12 animate-text animate-delay-2">
+                            <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
+                                <div class="flex flex-col md:flex-row md:items-center mb-4">
+                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Feb 2022 - Jan 2024</span>
+                                    <h3 class="text-xl font-semibold font-display">Software Developer</h3>
+                                </div>
+                                <h4 class="text-lg text-primary mb-4">Cognizant Pvt Ltd.</h4>
+                                <p class="text-gray-400 text-sm">
+                                    Refactored monolithic apps into microservices, increasing deployment velocity by 3x. Developed ML-driven features for customer profiling and reduced API error rates by 45% across production environments.                            </p>
                             </div>
-                            <h4 class="text-lg text-primary mb-4">Cognizant Pvt Ltd.</h4>
-                            <p class="text-gray-400 text-sm">
-                                Refactored monolithic apps into microservices, increasing deployment velocity by 3x. Developed ML-driven features for customer profiling and reduced API error rates by 45% across production environments.                            </p>
                         </div>
-                    </div>
-                    
-                    <!-- Experience 3 -->
-                    <div class="timeline-item relative pl-8 animate-text animate-delay-3">
-                        <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
-                            <div class="flex flex-col md:flex-row md:items-center mb-4">
-                                <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">2021 - 2022</span>
-                                <h3 class="text-xl font-semibold font-display">Java Programmer</h3>
+                        
+                        <!-- Experience 3 -->
+                        <div class="timeline-item relative pl-8 animate-text animate-delay-3">
+                            <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
+                                <div class="flex flex-col md:flex-row md:items-center mb-4">
+                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">2021 - 2022</span>
+                                    <h3 class="text-xl font-semibold font-display">Java Programmer</h3>
+                                </div>
+                                <h4 class="text-lg text-primary mb-4">Gandhi Institute of Technology and Management</h4>
+                                <p class="text-gray-400 text-sm">
+                                    Created a real-time exam engine with automated scoring, improving grading turnaround by 30%. Deployed on AWS EC2 with shell-based logging and backup for 99.8% uptime.                            </p>
                             </div>
-                            <h4 class="text-lg text-primary mb-4">Gandhi Institute of Technology and Management</h4>
-                            <p class="text-gray-400 text-sm">
-                                Created a real-time exam engine with automated scoring, improving grading turnaround by 30%. Deployed on AWS EC2 with shell-based logging and backup for 99.8% uptime.                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-dark/90 backdrop-blur-sm">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">Let's Connect</h2>
-            <div class="flex flex-col md:flex-row">
-                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8 animate-text animate-delay-1">
-                    <h3 class="text-2xl font-semibold mb-6 font-display">Get in Touch</h3>
-                    <p class="text-gray-400 text-lg mb-8">
-                        Have a project in mind or want to discuss potential opportunities? I'd love to hear from you.
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="bg-primary/10 p-3 rounded-lg mr-4 text-primary">
-                                <i class="fas fa-map-marker-alt text-lg"></i>
+        </section>
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-dark/90 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">Let's Connect</h2>
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8 animate-text animate-delay-1">
+                        <h3 class="text-2xl font-semibold mb-6 font-display">Get in Touch</h3>
+                        <p class="text-gray-400 text-lg mb-8">
+                            Have a project in mind or want to discuss potential opportunities? I'd love to hear from you.
+                        </p>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4 text-primary">
+                                    <i class="fas fa-map-marker-alt text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-300">Location</h4>
+                                    <p class="text-gray-500">Newyork, US</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-medium text-gray-300">Location</h4>
-                                <p class="text-gray-500">Newyork, US</p>
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4 text-primary">
+                                    <i class="fas fa-envelope text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-300">Email</h4>
+                                    <p class="text-gray-500">b.harish2727@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 p-3 rounded-lg mr-4 text-primary">
+                                    <i class="fas fa-phone-alt text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-300">Phone</h4>
+                                    <p class="text-gray-500">+1 (716) 335-1329</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <div class="bg-primary/10 p-3 rounded-lg mr-4 text-primary">
-                                <i class="fas fa-envelope text-lg"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-300">Email</h4>
-                                <p class="text-gray-500">b.harish2727@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-primary/10 p-3 rounded-lg mr-4 text-primary">
-                                <i class="fas fa-phone-alt text-lg"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-300">Phone</h4>
-                                <p class="text-gray-500">+1 (716) 335-1329</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex space-x-4 mt-8">
-<!--                         <a href="#" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                        <div class="flex space-x-4 mt-8">
+    <!--                         <a href="#" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
                             <i class="fab fa-twitter text-lg"></i>
                         </a> -->
-                        <a href="https://www.linkedin.com/in/harish-bejawada/" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                            <a href="https://www.linkedin.com/in/harish-bejawada/" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                                <i class="fab fa-linkedin-in text-lg"></i>
+                            </a>
+                            <a href="https://github.com/HarishB2727" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                                <i class="fab fa-github text-lg"></i>
+                            </a>
+                            <a href="https://bejawadaharish.com" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                                <i class="fab fa-dribbble text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 animate-text animate-delay-2">
+                        <form class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Your Email</label>
+                                    <input type="email" id="email" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">Subject</label>
+                                <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input"></textarea>
+                            </div>
+                            <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-light transition duration-300 w-full">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-darker py-12 border-t border-gray-800">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <h2 class="text-2xl font-bold text-gradient font-display">Harish Bejawada</h2>
+                        <p class="text-gray-500 mt-2 text-sm">Software Engineer</p>
+                    </div>
+                    <div class="flex space-x-6">
+    <!--                     <a href="#" class="text-gray-500 hover:text-primary transition duration-300">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a> -->
+                        <a href="https://www.linkedin.com/in/harish-bejawada/" class="text-gray-500 hover:text-primary transition duration-300">
                             <i class="fab fa-linkedin-in text-lg"></i>
                         </a>
-                        <a href="https://github.com/HarishB2727" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                        <a href="https://github.com/HarishB2727" class="text-gray-500 hover:text-primary transition duration-300">
                             <i class="fab fa-github text-lg"></i>
                         </a>
-                        <a href="https://bejawadaharish.com" class="bg-primary/10 text-primary p-3 rounded-lg hover:bg-primary/20 transition duration-300 social-icon">
+                        <a href="https://bejawadaharish.com" class="text-gray-500 hover:text-primary transition duration-300">
                             <i class="fab fa-dribbble text-lg"></i>
                         </a>
                     </div>
                 </div>
-                <div class="md:w-1/2 animate-text animate-delay-2">
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
-                                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Your Email</label>
-                                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">Subject</label>
-                            <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                            <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg outline-none transition duration-300 form-input"></textarea>
-                        </div>
-                        <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-light transition duration-300 w-full">
-                            Send Message
-                        </button>
-                    </form>
+                <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                        &copy; 2025 Harish Bejawada. All rights reserved.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-primary transition duration-300 text-sm">Privacy</a>
+                        <a href="#" class="text-gray-500 hover:text-primary transition duration-300 text-sm">Terms</a>
+                        <a href="#" class="text-gray-500 hover:text-primary transition duration-300 text-sm">Cookies</a>
+                    </div>
                 </div>
             </div>
+            <div class="text-center md:text-left mt-4 md:mt-0">
+            <p class="text-gray-500 text-sm">
+                <span id="visit-count">0</span> visitors
+            </p>
         </div>
-    </section>
+        </footer>
 
-    <!-- Footer -->
-    <footer class="bg-darker py-12 border-t border-gray-800">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <h2 class="text-2xl font-bold text-gradient font-display">Harish Bejawada</h2>
-                    <p class="text-gray-500 mt-2 text-sm">Software Engineer</p>
-                </div>
-                <div class="flex space-x-6">
-<!--                     <a href="#" class="text-gray-500 hover:text-primary transition duration-300">
-                        <i class="fab fa-twitter text-lg"></i>
-                    </a> -->
-                    <a href="https://www.linkedin.com/in/harish-bejawada/" class="text-gray-500 hover:text-primary transition duration-300">
-                        <i class="fab fa-linkedin-in text-lg"></i>
-                    </a>
-                    <a href="https://github.com/HarishB2727" class="text-gray-500 hover:text-primary transition duration-300">
-                        <i class="fab fa-github text-lg"></i>
-                    </a>
-                    <a href="https://bejawadaharish.com" class="text-gray-500 hover:text-primary transition duration-300">
-                        <i class="fab fa-dribbble text-lg"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0">
-                    &copy; 2025 Harish Bejawada. All rights reserved.
-                </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 hover:text-primary transition duration-300 text-sm">Privacy</a>
-                    <a href="#" class="text-gray-500 hover:text-primary transition duration-300 text-sm">Terms</a>
-                    <a href="#" class="text-gray-500 hover:text-primary transition duration-300 text-sm">Cookies</a>
-                </div>
-            </div>
-        </div>
-        <div class="text-center md:text-left mt-4 md:mt-0">
-        <p class="text-gray-500 text-sm">
-            <span id="visit-count">0</span> visitors
-        </p>
-    </div>
-    </footer>
-
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-light transition duration-300 opacity-0 invisible transform translate-y-10">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Chatbot Widget -->
-    <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
-        <button id="chatbot-toggle" class="bg-primary text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center hover:bg-primary-light transition-all duration-300 hover:scale-110">
-            <i class="fas fa-robot text-2xl"></i>
+        <!-- Back to Top Button -->
+        <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-light transition duration-300 opacity-0 invisible transform translate-y-10">
+            <i class="fas fa-arrow-up"></i>
         </button>
-        <div id="chatbot-popup" class="absolute bottom-20 right-0 w-80 h-96 rounded-lg shadow-2xl flex flex-col overflow-hidden">
-<!--         <div id="chatbot-popup" class="hidden absolute bottom-20 right-0 w-80 h-96 rounded-lg shadow-2xl flex flex-col overflow-hidden"> -->
-            <div class="bg-darker p-4 border-b border-gray-700 flex items-center">
-                <div class="bg-primary/10 text-primary p-2 rounded-full mr-3">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <h3 class="font-semibold">Ask Harish's AI</h3>
-                <button id="close-chatbot" class="ml-auto text-gray-400 hover:text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto text-sm space-y-3">
-                <div class="bot-message rounded-lg p-3 max-w-[80%]">
-                    <p>Hi! I'm Harish's AI assistant. Ask me anything about his skills, experience, or projects.</p>
-                </div>
-            </div>
-            
-            <div class="p-3 border-t border-gray-700 bg-darker/50">
-                <div class="flex">
-                    <input type="text" id="user-message" placeholder="Type your question..." 
-                           class="flex-1 rounded-l-lg px-4 py-2 focus:outline-none">
-                    <button id="send-message" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary-light transition">
-                        <i class="fas fa-paper-plane"></i>
+
+        <!-- Chatbot Widget -->
+        <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+            <button id="chatbot-toggle" class="bg-primary text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center hover:bg-primary-light transition-all duration-300 hover:scale-110">
+                <i class="fas fa-robot text-2xl"></i>
+            </button>
+            <div id="chatbot-popup" class="absolute bottom-20 right-0 w-80 h-96 rounded-lg shadow-2xl flex flex-col overflow-hidden">
+    <!--         <div id="chatbot-popup" class="hidden absolute bottom-20 right-0 w-80 h-96 rounded-lg shadow-2xl flex flex-col overflow-hidden"> -->
+                <div class="bg-darker p-4 border-b border-gray-700 flex items-center">
+                    <div class="bg-primary/10 text-primary p-2 rounded-full mr-3">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="font-semibold">Ask Harish's AI</h3>
+                    <button id="close-chatbot" class="ml-auto text-gray-400 hover:text-white">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
+                
+                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto text-sm space-y-3">
+                    <div class="bot-message rounded-lg p-3 max-w-[80%]">
+                        <p>Hi! I'm Harish's AI assistant. Ask me anything about his skills, experience, or projects.</p>
+                    </div>
+                </div>
+                
+                <div class="p-3 border-t border-gray-700 bg-darker/50">
+                    <div class="flex">
+                        <input type="text" id="user-message" placeholder="Type your question..." 
+                               class="flex-1 rounded-l-lg px-4 py-2 focus:outline-none">
+                        <button id="send-message" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary-light transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
+    </main>
 </div>
     <script src="jobs.js"></script>
 </body>
