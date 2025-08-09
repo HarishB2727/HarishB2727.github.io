@@ -115,6 +115,89 @@ window.addEventListener('load', animateOnScroll);
 window.addEventListener('scroll', animateOnScroll);
 window.addEventListener('resize', animateOnScroll);
 
+// Contact form submission using FormSubmit (no redirect)
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const statusEl = document.getElementById('contact-status');
+    const honeyInput = contactForm.querySelector('input[name="_honey"]');
+
+    if (honeyInput && honeyInput.value) {
+      // Bot detected; silently ignore
+      return;
+    }
+
+    const nameInput = contactForm.querySelector('#name');
+    const emailInput = contactForm.querySelector('#email');
+    const subjectInput = contactForm.querySelector('#subject');
+    const messageInput = contactForm.querySelector('#message');
+
+    const payload = {
+      name: nameInput?.value?.trim() || '',
+      email: emailInput?.value?.trim() || '',
+      subject: subjectInput?.value?.trim() || '',
+      message: messageInput?.value?.trim() || '',
+      _subject: contactForm.querySelector('input[name="_subject"]')?.value || 'New message from portfolio contact form',
+      _template: contactForm.querySelector('input[name="_template"]')?.value || 'table'
+    };
+
+    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+      return;
+    }
+
+    const originalBtnText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+    }
+    if (statusEl) statusEl.classList.add('hidden');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/b.harish2727@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        if (statusEl) {
+          statusEl.textContent = 'Message sent successfully!';
+          statusEl.classList.remove('hidden');
+        } else {
+          alert('Message sent successfully!');
+        }
+        contactForm.reset();
+      } else {
+        const msg = data.message || 'Failed to send message. Please try again.';
+        if (statusEl) {
+          statusEl.textContent = msg;
+          statusEl.classList.remove('hidden');
+        } else {
+          alert(msg);
+        }
+      }
+    } catch (error) {
+      if (statusEl) {
+        statusEl.textContent = 'Network error. Please try again later.';
+        statusEl.classList.remove('hidden');
+      } else {
+        alert('Network error. Please try again later.');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText || 'Send Message';
+      }
+    }
+  });
+}
 
 // Chatbot functionality
 const chatbotToggle = document.getElementById('chatbot-toggle');
