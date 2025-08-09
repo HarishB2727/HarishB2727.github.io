@@ -115,15 +115,6 @@ window.addEventListener('load', animateOnScroll);
 window.addEventListener('scroll', animateOnScroll);
 window.addEventListener('resize', animateOnScroll);
 
-// Form submission
-const form = document.querySelector('form');
-if (form) {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Thank you for your message! I will get back to you soon.');
-        form.reset();
-    });
-}
 
 // Chatbot functionality
 const chatbotToggle = document.getElementById('chatbot-toggle');
