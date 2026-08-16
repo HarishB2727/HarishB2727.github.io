@@ -493,16 +493,17 @@ document.addEventListener('DOMContentLoaded', () => {
 const Avatar = (function () {
     // One character definition, rendered twice via <use>. Animating the original
     // updates every copy on the page, so the About illustration talks too.
-    const character = document.getElementById('character-root');
+    const character = document.getElementById('character-head');
+    const stateEls = ['character-head', 'character-root', 'character-full']
+        .map(id => document.getElementById(id)).filter(Boolean);
     const stages = [document.getElementById('harish-avatar'), document.getElementById('about-avatar')].filter(Boolean);
     if (!character) return { speak() {}, greet() {}, stop() {}, think() {}, idle() {}, prime() {}, isVoiceOn: () => false, toggleVoice() {} };
 
-    const svg = character;
     const mouth = document.getElementById('mouth-shape');
     const mouthClip = document.getElementById('mouth-clip-shape');
     const mouthLine = document.getElementById('mouth-line');
     const eyes = [document.getElementById('eye-left'), document.getElementById('eye-right')];
-    const pupils = svg.querySelectorAll('.pupil');
+    const pupils = character.querySelectorAll('.pupil');
     const thinkingDots = document.getElementById('avatar-thinking');
 
     const supportsSpeech = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
@@ -543,7 +544,7 @@ const Avatar = (function () {
     }
 
     function startMouth() {
-        svg.classList.add('is-speaking');
+        stateEls.forEach(el => el.classList.add('is-speaking'));
         if (mouthTimer) return;
         let tick = 0;
         let quiet = 0;
@@ -569,14 +570,16 @@ const Avatar = (function () {
         clearInterval(mouthTimer);
         mouthTimer = null;
         amplitude = 0;
-        svg.classList.remove('is-speaking');
+        stateEls.forEach(el => el.classList.remove('is-speaking'));
         setMouth(0);
     }
 
     // --- voice ---
     let cachedVoice = null;
-    const MALE_VOICES = ['Rishi', 'Google UK English Male', 'Microsoft Ravi', 'Microsoft Prabhat',
-                         'Microsoft Guy', 'Google US English', 'Daniel', 'Tom', 'Alex', 'Aaron'];
+    // "Google US English" is a female voice despite the neutral name — naming is no
+    // guide, so match on known voices explicitly and rule the female ones out hard.
+    const MALE_VOICE = /(rishi|ravi|prabhat|\bguy\b|daniel|thomas|\btom\b|\balex\b|aaron|fred|arthur|oliver|george|james|eric|christopher|\brogerersatz\b|\bmale\b|\bman\b)/i;
+    const FEMALE_VOICE = /(samantha|ava|allison|susan|victoria|karen|moira|tessa|fiona|serena|\bzoe\b|nicky|\bkate\b|martha|catherine|zira|aria|jenny|michelle|sonia|libby|emily|olivia|nora|alice|linda|heather|\bsara\b|joana|luciana|amelie|female|woman|google us english)/i;
 
     // Voice quality varies wildly per device. Score what's installed rather than
     // taking the first name off a list: enhanced/neural voices and network voices
@@ -588,10 +591,11 @@ const Avatar = (function () {
 
         const score = (v) => {
             let n = 0;
-            if (/(enhanced|premium|neural|natural|siri)/i.test(v.name)) n += 4;
+            if (FEMALE_VOICE.test(v.name)) n -= 20;         // it has to sound like Harish
+            if (MALE_VOICE.test(v.name)) n += 6;
+            if (/(enhanced|premium|neural|natural)/i.test(v.name)) n += 4;
             if (v.localService === false) n += 2;           // network voices are the good ones
             if (/^en-IN/.test(v.lang)) n += 2;              // matches Harish's accent
-            if (MALE_VOICES.some(name => v.name.includes(name))) n += 3;
             if (/(compact|eloquence)/i.test(v.name)) n -= 3;
             return n;
         };
@@ -695,13 +699,13 @@ const Avatar = (function () {
     }
 
     function think() {
-        svg.classList.add('is-thinking');
+        stateEls.forEach(el => el.classList.add('is-thinking'));
         if (thinkingDots) thinkingDots.classList.remove('hidden');
         pupils.forEach(p => { p.style.transform = 'translate(-1.5px, -2.5px)'; });
     }
 
     function idle() {
-        svg.classList.remove('is-thinking');
+        stateEls.forEach(el => el.classList.remove('is-thinking'));
         if (thinkingDots) thinkingDots.classList.add('hidden');
         pupils.forEach(p => { p.style.transform = 'translate(0, 0)'; });
     }
@@ -822,7 +826,7 @@ userMessage.addEventListener('keypress', (e) => {
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     const greeter = document.getElementById('greeter');
     const bubble = document.getElementById('greeter-bubble');
-    const runner = document.getElementById('greeter-avatar');
+    const runner = document.getElementById('character-full');
     const GREETING = "Hi! How are you? Ask me anything about my work.";
 
     const openChat = () => {
@@ -840,7 +844,11 @@ userMessage.addEventListener('keypress', (e) => {
 
     // If the visitor opens the chat themselves, get out of the way.
     let cancelled = false;
-    const bailOut = () => { cancelled = true; greeter.style.display = 'none'; };
+    const bailOut = () => {
+        cancelled = true;
+        runner.classList.remove('running', 'waving');
+        greeter.style.display = 'none';
+    };
     chatbotToggle.addEventListener('click', bailOut, { once: true });
 
     if (document.readyState !== 'complete') {
@@ -857,18 +865,22 @@ userMessage.addEventListener('keypress', (e) => {
 
     // 1. walk in
     runner.classList.add('running');
-    await greeter.animate([
+    const played = (animation) => animation.finished.catch(() => { cancelled = true; });
+
+    await played(greeter.animate([
         { transform: 'translateX(-180px) scale(0.9)', opacity: 0 },
         { transform: 'translateX(0) scale(1)', opacity: 1 }
-    ], { duration: 950, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }).finished;
+    ], { duration: 950, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }));
     if (cancelled) return;
 
-    // 2. greet
+    // 2. stop, wave, say hello
     runner.classList.remove('running');
+    runner.classList.add('waving');
     bubble.classList.add('show');
     await wait(2300);
     if (cancelled) return;
     bubble.classList.remove('show');
+    runner.classList.remove('waving');
     await wait(300);
     if (cancelled) return;
 
@@ -879,11 +891,11 @@ userMessage.addEventListener('keypress', (e) => {
     const dy = (target.top + target.height / 2) - (from.top + from.height / 2);
 
     runner.classList.add('running');
-    await greeter.animate([
+    await played(greeter.animate([
         { transform: 'translate(0, 0) scale(1)', opacity: 1 },
         { transform: `translate(${dx * 0.55}px, ${dy * 0.4 - 45}px) scale(0.7)`, opacity: 1, offset: 0.55 },
         { transform: `translate(${dx}px, ${dy}px) scale(0.08)`, opacity: 0.9 }
-    ], { duration: 1500, easing: 'cubic-bezier(.45,.05,.55,1)', fill: 'forwards' }).finished;
+    ], { duration: 1500, easing: 'cubic-bezier(.45,.05,.55,1)', fill: 'forwards' }));
     if (cancelled) return;
 
     greeter.style.display = 'none';

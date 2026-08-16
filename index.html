@@ -421,7 +421,7 @@
             transition: transform 250ms ease;
         }
 
-        #character-root.is-thinking #avatar-brows { transform: translateY(-3px); }
+        #character-head.is-thinking #avatar-brows { transform: translateY(-3px); }
 
         #mouth-shape, #mouth-clip-shape { transition: none; }
 
@@ -487,12 +487,36 @@
 
         #greeter-bubble.show { opacity: 1; transform: translate(-50%, 0); }
 
-        @keyframes greeterRunBob {
-            0%, 100% { transform: translateY(0) rotate(-4deg); }
-            50%      { transform: translateY(-9px) rotate(4deg); }
+        /* limbs rotate about their shoulder and hip joints, in viewBox units */
+        #arm-left, #arm-right, #leg-left, #leg-right, #character-full { transform-box: view-box; }
+        #arm-left  { transform-origin: 70px 152px; }
+        #arm-right { transform-origin: 130px 152px; }
+        #leg-left  { transform-origin: 87px 212px; }
+        #leg-right { transform-origin: 113px 212px; }
+        #character-full { transform-origin: 100px 300px; }
+
+        @keyframes waveArm {
+            0%, 100% { transform: rotate(-108deg); }
+            50%      { transform: rotate(-146deg); }
         }
 
-        #greeter-avatar.running { animation: greeterRunBob 300ms ease-in-out infinite; }
+        @keyframes swingForward { 0%, 100% { transform: rotate(-32deg); } 50% { transform: rotate(32deg); } }
+        @keyframes swingBack    { 0%, 100% { transform: rotate(32deg); }  50% { transform: rotate(-32deg); } }
+        @keyframes strideForward { 0%, 100% { transform: rotate(28deg); }  50% { transform: rotate(-28deg); } }
+        @keyframes strideBack    { 0%, 100% { transform: rotate(-28deg); } 50% { transform: rotate(28deg); } }
+        @keyframes runBob {
+            0%, 100% { transform: translateY(0) rotate(4deg); }
+            50%      { transform: translateY(-7px) rotate(4deg); }
+        }
+
+        #character-full.waving #arm-right { animation: waveArm 560ms ease-in-out infinite; }
+
+        #character-full.running            { animation: runBob 170ms ease-in-out infinite; }
+        #character-full.running #arm-left  { animation: swingForward 340ms ease-in-out infinite; }
+        #character-full.running #arm-right { animation: swingBack 340ms ease-in-out infinite; }
+        #character-full.running #leg-left  { animation: strideForward 340ms ease-in-out infinite; }
+        #character-full.running #leg-right { animation: strideBack 340ms ease-in-out infinite; }
+        #character-full.running #character-shadow { animation: none; opacity: 0.18; }
 
         @media (prefers-reduced-motion: reduce) {
             #greeter { display: none; }
@@ -562,6 +586,68 @@
                 <ellipse id="mouth-clip-shape" cx="100" cy="106" rx="11" ry="1.2"></ellipse>
             </clipPath>
 
+            <!-- head, shared by the bust and the full body -->
+            <g id="character-head">
+                <!-- neck -->
+                <path d="M87 104 L113 104 L113 133 C113 141 87 141 87 133 Z" fill="#a97046"></path>
+                <path d="M87 104 L113 104 L113 113 C107 119 93 119 87 113 Z" fill="#8a5530"></path>
+
+                <!-- ears -->
+                <ellipse cx="65" cy="84" rx="6" ry="9" fill="#b07a4a"></ellipse>
+                <ellipse cx="135" cy="84" rx="6" ry="9" fill="#b07a4a"></ellipse>
+                <!-- face -->
+                <path d="M67 64 C67 41 81 29 100 29 C119 29 133 41 133 64 L133 86 C133 110 118 125 100 125 C82 125 67 110 67 86 Z" fill="url(#skin-grad)"></path>
+                <ellipse cx="78" cy="92" rx="8" ry="6" fill="url(#cheek-grad)"></ellipse>
+                <ellipse cx="122" cy="92" rx="8" ry="6" fill="url(#cheek-grad)"></ellipse>
+
+                <!-- sideburns -->
+                <path d="M67 56 L73 56 C73 64 73 70 72 74 L67 71 Z" fill="url(#hair-grad)"></path>
+                <path d="M133 56 L127 56 C127 64 127 70 128 74 L133 71 Z" fill="url(#hair-grad)"></path>
+
+                <!-- hair: full modern quiff with a fringe over the forehead -->
+                <path d="M100 19 C127 19 142 38 139 65 C138 72 137 76 136 79 C134 64 130 55 124 50 C116 56 104 58 92 56 C84 55 78 53 74 50 C69 56 65 65 64 77 C63 75 62 71 61 65 C58 38 73 19 100 19 Z" fill="url(#hair-grad)"></path>
+                <path d="M104 22 C121 21 133 30 137 43 C129 32 117 26 104 27 Z" fill="#3b3145" opacity="0.8"></path>
+                <path d="M78 26 C86 21 96 20 104 22 C94 23 85 27 78 33 Z" fill="#3b3145" opacity="0.45"></path>
+
+                <!-- brows -->
+                <g id="avatar-brows">
+                    <path d="M80 69 C84.5 65.5 92.5 65.5 96 68.5" stroke="#241c2b" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+                    <path d="M104 68.5 C107.5 65.5 115.5 65.5 120 69" stroke="#241c2b" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+                </g>
+
+                <!-- eyes -->
+                <g class="eye-group" id="eye-left">
+                    <ellipse cx="86" cy="81" rx="7.2" ry="5" fill="#fbf6ef"></ellipse>
+                    <circle class="pupil" cx="86" cy="81.4" r="3.7" fill="#42291a"></circle>
+                    <circle class="pupil" cx="86" cy="81.4" r="1.8" fill="#14100c"></circle>
+                    <circle cx="87.6" cy="79.8" r="1.1" fill="#ffffff" opacity="0.9"></circle>
+                    <path d="M79 79 C82 75.4 90 75.4 93 79" stroke="#2f2015" stroke-width="1.9" stroke-linecap="round" fill="none"></path>
+                    <path d="M80 85.8 C83 87.6 89 87.6 92 85.8" stroke="#8a5530" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.55"></path>
+                </g>
+                <g class="eye-group" id="eye-right">
+                    <ellipse cx="114" cy="81" rx="7.2" ry="5" fill="#fbf6ef"></ellipse>
+                    <circle class="pupil" cx="114" cy="81.4" r="3.7" fill="#42291a"></circle>
+                    <circle class="pupil" cx="114" cy="81.4" r="1.8" fill="#14100c"></circle>
+                    <circle cx="115.6" cy="79.8" r="1.1" fill="#ffffff" opacity="0.9"></circle>
+                    <path d="M107 79 C110 75.4 118 75.4 121 79" stroke="#2f2015" stroke-width="1.9" stroke-linecap="round" fill="none"></path>
+                    <path d="M108 85.8 C111 87.6 117 87.6 120 85.8" stroke="#8a5530" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.55"></path>
+                </g>
+
+                <!-- nose -->
+                <path d="M100 82 L96.5 90 C98.5 92 101.5 92 103.5 90" stroke="#8a5530" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+
+                <!-- mouth -->
+                <g id="avatar-mouth">
+                    <ellipse id="mouth-shape" cx="100" cy="106" rx="11" ry="1.2" fill="#3d1017"></ellipse>
+                    <g clip-path="url(#mouth-clip)">
+                        <rect x="87" y="97" width="26" height="5" fill="#f8f3ec"></rect>
+                        <ellipse cx="100" cy="116" rx="6.5" ry="4.5" fill="#b84f62"></ellipse>
+                    </g>
+                    <path id="mouth-line" d="M89.5 104 C94 109.5 106 109.5 110.5 104" stroke="#8c4147" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+                </g>
+            </g>
+
+            <!-- bust: chat panel and About section -->
             <symbol id="harish-character" viewBox="30 14 140 172">
                 <g id="character-root">
                     <!-- shoulders -->
@@ -571,63 +657,37 @@
                     <!-- polo -->
                     <path d="M82 140 L100 178 L118 140 L110 136 L100 152 L90 136 Z" fill="url(#polo-grad)"></path>
                     <path d="M90 136 L100 152 L110 136 L104 133 L100 140 L96 133 Z" fill="#9c1a26"></path>
-                    <!-- neck -->
-                    <path d="M87 104 L113 104 L113 133 C113 141 87 141 87 133 Z" fill="#a97046"></path>
-                    <path d="M87 104 L113 104 L113 113 C107 119 93 119 87 113 Z" fill="#8a5530"></path>
+                    <use href="#character-head"></use>
+                </g>
+            </symbol>
 
-                    <!-- ears -->
-                    <ellipse cx="65" cy="84" rx="6" ry="9" fill="#b07a4a"></ellipse>
-                    <ellipse cx="135" cy="84" rx="6" ry="9" fill="#b07a4a"></ellipse>
-                    <!-- face -->
-                    <path d="M67 64 C67 41 81 29 100 29 C119 29 133 41 133 64 L133 86 C133 110 118 125 100 125 C82 125 67 110 67 86 Z" fill="url(#skin-grad)"></path>
-                    <ellipse cx="78" cy="92" rx="8" ry="6" fill="url(#cheek-grad)"></ellipse>
-                    <ellipse cx="122" cy="92" rx="8" ry="6" fill="url(#cheek-grad)"></ellipse>
-
-                    <!-- sideburns -->
-                    <path d="M67 56 L73 56 C73 64 73 70 72 74 L67 71 Z" fill="url(#hair-grad)"></path>
-                    <path d="M133 56 L127 56 C127 64 127 70 128 74 L133 71 Z" fill="url(#hair-grad)"></path>
-
-                    <!-- hair: full modern quiff with a fringe over the forehead -->
-                    <path d="M100 19 C127 19 142 38 139 65 C138 72 137 76 136 79 C134 64 130 55 124 50 C116 56 104 58 92 56 C84 55 78 53 74 50 C69 56 65 65 64 77 C63 75 62 71 61 65 C58 38 73 19 100 19 Z" fill="url(#hair-grad)"></path>
-                    <path d="M104 22 C121 21 133 30 137 43 C129 32 117 26 104 27 Z" fill="#3b3145" opacity="0.8"></path>
-                    <path d="M78 26 C86 21 96 20 104 22 C94 23 85 27 78 33 Z" fill="#3b3145" opacity="0.45"></path>
-
-                    <!-- brows -->
-                    <g id="avatar-brows">
-                        <path d="M80 69 C84.5 65.5 92.5 65.5 96 68.5" stroke="#241c2b" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
-                        <path d="M104 68.5 C107.5 65.5 115.5 65.5 120 69" stroke="#241c2b" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+            <!-- full body: the greeter who waves and runs -->
+            <symbol id="harish-full" viewBox="30 8 140 310">
+                <g id="character-full">
+                    <ellipse id="character-shadow" cx="100" cy="300" rx="34" ry="6" fill="#000" opacity="0.28"></ellipse>
+                    <!-- legs -->
+                    <g id="leg-left">
+                        <path d="M87 212 L83 286" stroke="#1a2030" stroke-width="17" stroke-linecap="round" fill="none"></path>
+                        <ellipse cx="80" cy="294" rx="12" ry="6" fill="#0d1119"></ellipse>
                     </g>
-
-                    <!-- eyes -->
-                    <g class="eye-group" id="eye-left">
-                        <ellipse cx="86" cy="81" rx="7.2" ry="5" fill="#fbf6ef"></ellipse>
-                        <circle class="pupil" cx="86" cy="81.4" r="3.7" fill="#42291a"></circle>
-                        <circle class="pupil" cx="86" cy="81.4" r="1.8" fill="#14100c"></circle>
-                        <circle cx="87.6" cy="79.8" r="1.1" fill="#ffffff" opacity="0.9"></circle>
-                        <path d="M79 79 C82 75.4 90 75.4 93 79" stroke="#2f2015" stroke-width="1.9" stroke-linecap="round" fill="none"></path>
-                        <path d="M80 85.8 C83 87.6 89 87.6 92 85.8" stroke="#8a5530" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.55"></path>
+                    <g id="leg-right">
+                        <path d="M113 212 L117 286" stroke="#1a2030" stroke-width="17" stroke-linecap="round" fill="none"></path>
+                        <ellipse cx="120" cy="294" rx="12" ry="6" fill="#0d1119"></ellipse>
                     </g>
-                    <g class="eye-group" id="eye-right">
-                        <ellipse cx="114" cy="81" rx="7.2" ry="5" fill="#fbf6ef"></ellipse>
-                        <circle class="pupil" cx="114" cy="81.4" r="3.7" fill="#42291a"></circle>
-                        <circle class="pupil" cx="114" cy="81.4" r="1.8" fill="#14100c"></circle>
-                        <circle cx="115.6" cy="79.8" r="1.1" fill="#ffffff" opacity="0.9"></circle>
-                        <path d="M107 79 C110 75.4 118 75.4 121 79" stroke="#2f2015" stroke-width="1.9" stroke-linecap="round" fill="none"></path>
-                        <path d="M108 85.8 C111 87.6 117 87.6 120 85.8" stroke="#8a5530" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.55"></path>
+                    <!-- torso -->
+                    <path d="M66 152 C66 141 80 135 100 135 C120 135 134 141 134 152 L138 214 C124 221 76 221 62 214 Z" fill="url(#jacket-grad)"></path>
+                    <path d="M88 137 L100 162 L112 137 L106 134 L100 145 L94 134 Z" fill="url(#polo-grad)"></path>
+                    <path d="M100 162 L100 218" stroke="#141926" stroke-width="2.5" fill="none"></path>
+                    <!-- arms -->
+                    <g id="arm-left">
+                        <path d="M70 152 L59 200" stroke="#232a3a" stroke-width="15" stroke-linecap="round" fill="none"></path>
+                        <circle cx="57" cy="206" r="7" fill="#b07a4a"></circle>
                     </g>
-
-                    <!-- nose -->
-                    <path d="M100 82 L96.5 90 C98.5 92 101.5 92 103.5 90" stroke="#8a5530" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-
-                    <!-- mouth -->
-                    <g id="avatar-mouth">
-                        <ellipse id="mouth-shape" cx="100" cy="106" rx="11" ry="1.2" fill="#3d1017"></ellipse>
-                        <g clip-path="url(#mouth-clip)">
-                            <rect x="87" y="97" width="26" height="5" fill="#f8f3ec"></rect>
-                            <ellipse cx="100" cy="116" rx="6.5" ry="4.5" fill="#b84f62"></ellipse>
-                        </g>
-                        <path id="mouth-line" d="M89.5 104 C94 109.5 106 109.5 110.5 104" stroke="#8c4147" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+                    <g id="arm-right">
+                        <path d="M130 152 L141 200" stroke="#232a3a" stroke-width="15" stroke-linecap="round" fill="none"></path>
+                        <circle cx="143" cy="206" r="7" fill="#b07a4a"></circle>
                     </g>
+                    <use href="#character-head"></use>
                 </g>
             </symbol>
         </defs>
@@ -1197,7 +1257,7 @@
         <!-- Intro greeter: the character walks in, says hi, then hops into the chat -->
         <div id="greeter" class="fixed z-40 pointer-events-none" aria-hidden="true">
             <div id="greeter-bubble">Hi! How are you?</div>
-            <svg id="greeter-avatar" class="w-28 h-32 md:w-36 md:h-40"><use href="#harish-character"></use></svg>
+            <svg id="greeter-avatar" class="w-20 h-44 md:w-24 md:h-52"><use href="#harish-full"></use></svg>
         </div>
 
         <!-- Chatbot Widget -->
