@@ -831,8 +831,6 @@ userMessage.addEventListener('keypress', (e) => {
 
     const openChat = () => {
         chatbotPopup.classList.remove('hidden');
-        chatbotPopup.classList.add('opening');
-        setTimeout(() => chatbotPopup.classList.remove('opening'), 400);
         chatMessages.scrollTop = chatMessages.scrollHeight;
         Avatar.greet(GREETING);
     };
@@ -856,34 +854,6 @@ userMessage.addEventListener('keypress', (e) => {
     if (document.readyState !== 'complete') {
         await new Promise(resolve => window.addEventListener('load', resolve, { once: true }));
     }
-
-    // Whatever happens to the animation — a stalled frame loop, a tab that is
-    // never looked at, an environment that always reports itself hidden — the
-    // visitor still ends up with a working chat panel.
-    let finished = false;
-    const watchdog = setTimeout(() => {
-        if (finished) return;
-        cancelled = true;
-        greeter.style.display = 'none';
-        document.getElementById('web-strand').style.opacity = '0';
-        document.getElementById('web-anchor').style.opacity = '0';
-        openChat();
-    }, 14000);
-
-    // requestAnimationFrame never fires in a background tab, which would strand
-    // him mid-swing. Wait until the page is actually being looked at.
-    if (document.hidden) {
-        await new Promise(resolve => {
-            const onVisible = () => {
-                if (document.hidden) return;
-                document.removeEventListener('visibilitychange', onVisible);
-                resolve();
-            };
-            document.addEventListener('visibilitychange', onVisible);
-        });
-    }
-    if (cancelled) return;
-
     await wait(500);
     if (cancelled) return;
 
@@ -897,17 +867,11 @@ userMessage.addEventListener('keypress', (e) => {
     runner.classList.add('running');
     const played = (animation) => animation.finished.catch(() => { cancelled = true; });
 
-    const walkIn = greeter.animate([
+    await played(greeter.animate([
         { transform: 'translateX(-180px) scale(0.9)', opacity: 0 },
         { transform: 'translateX(0) scale(1)', opacity: 1 }
-    ], { duration: 950, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' });
-    await played(walkIn);
+    ], { duration: 950, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }));
     if (cancelled) return;
-
-    // A filling animation outranks inline styles, so hand control back to the
-    // stylesheet before the swing starts writing transforms frame by frame.
-    try { walkIn.commitStyles(); } catch (e) { /* not critical */ }
-    walkIn.cancel();
 
     // 2. stop, wave, say hello
     runner.classList.remove('running');
@@ -920,114 +884,23 @@ userMessage.addEventListener('keypress', (e) => {
     await wait(300);
     if (cancelled) return;
 
-    // 3. web-swing across to the chat button
-    const strand = document.getElementById('web-strand');
-    const anchorDot = document.getElementById('web-anchor');
+    // 3. run across and jump into the chat button
     const target = chatbotToggle.getBoundingClientRect();
     const from = greeter.getBoundingClientRect();
+    const dx = (target.left + target.width / 2) - (from.left + from.width / 2);
+    const dy = (target.top + target.height / 2) - (from.top + from.height / 2);
 
-    const origin = { x: from.left + from.width / 2, y: from.top + from.height / 2 };
-    const goal = { x: target.left + target.width / 2, y: target.top + target.height / 2 };
-    // anchor the web overhead and ahead of him, so the swing carries him forward
-    const anchor = { x: (origin.x + goal.x) / 2 + 60, y: Math.max(40, origin.y - 320) };
-
-    // hand position in page coordinates, for drawing the strand
-    const handAt = () => {
-        const box = greeter.getBoundingClientRect();
-        return { x: box.left + box.width * 0.82, y: box.top + box.height * 0.20 };
-    };
-
-    const drawStrand = (hand, progress) => {
-        const tipX = hand.x + (anchor.x - hand.x) * progress;
-        const tipY = hand.y + (anchor.y - hand.y) * progress;
-        // a little sag, so it behaves like a line under tension rather than a laser
-        const sag = 14 * (1 - progress);
-        strand.setAttribute('d', `M${hand.x} ${hand.y} Q${(hand.x + tipX) / 2} ${(hand.y + tipY) / 2 + sag} ${tipX} ${tipY}`);
-    };
-
-    const frames = (duration, onFrame) => new Promise(resolve => {
-        const startedAt = performance.now();
-        let done = false;
-        const finish = () => { if (!done) { done = true; resolve(); } };
-        const step = (now) => {
-            const t = Math.min(1, (now - startedAt) / duration);
-            onFrame(t);
-            if (t < 1 && !cancelled) requestAnimationFrame(step); else finish();
-        };
-        requestAnimationFrame(step);
-        setTimeout(finish, duration + 1500);   // rAF stalls if the tab goes hidden
-    });
-
-    const place = (x, y, deg, scale) => {
-        greeter.style.transform =
-            `translate(${x - origin.x}px, ${y - origin.y}px) rotate(${deg}deg) scale(${scale})`;
-    };
-    greeter.style.transformOrigin = '50% 20%';   // he hangs from the hand, not the feet
-
-    // 3a. wind up and fire the web
-    runner.classList.remove('running');
-    runner.classList.add('shooting');
-    await wait(220);
-    if (cancelled) return;
-
-    strand.style.opacity = '1';
-    await frames(200, (t) => drawStrand(handAt(), t));
-    if (cancelled) return;
-
-    anchorDot.setAttribute('cx', anchor.x);
-    anchorDot.setAttribute('cy', anchor.y);
-    anchorDot.setAttribute('r', 5);
-    anchorDot.style.opacity = '0.9';
-
-    // 3b. swing: a pendulum about the anchor, fastest at the bottom of the arc
-    runner.classList.remove('shooting');
-    runner.classList.add('swinging');
-
-    const ropeLength = Math.hypot(origin.x - anchor.x, origin.y - anchor.y);
-    const theta0 = Math.atan2(origin.x - anchor.x, origin.y - anchor.y);
-    const theta1 = -theta0 * 0.9;
-    const SWING_MS = 900;
-    let release = { x: origin.x, y: origin.y, vx: 0, vy: 0 };
-
-    await frames(SWING_MS, (t) => {
-        // theta0 -> theta1 following cosine easing, which is how a pendulum moves
-        const theta = theta1 + (theta0 - theta1) * (Math.cos(Math.PI * t) + 1) / 2;
-        const x = anchor.x + ropeLength * Math.sin(theta);
-        const y = anchor.y + ropeLength * Math.cos(theta);
-        // angular velocity -> tangential velocity, kept for the release
-        const omega = (theta0 - theta1) * Math.PI * Math.sin(Math.PI * t) / (2 * SWING_MS / 1000);
-        release = { x, y, vx: ropeLength * Math.cos(theta) * -omega, vy: ropeLength * Math.sin(theta) * omega };
-        place(x, y, theta * 180 / Math.PI, 1);
-        drawStrand(handAt(), 1);
-    });
-    if (cancelled) return;
-
-    // 3c. let go — solve the arc so gravity lands him exactly on the button
-    runner.classList.remove('swinging');
-    runner.classList.add('diving');
-    strand.style.opacity = '0';
-    anchorDot.style.opacity = '0';
-
-    const FLIGHT = 0.62;                 // seconds
-    const GRAVITY = 2400;                // px/s²
-    const vx = (goal.x - release.x) / FLIGHT;
-    const vy = (goal.y - release.y) / FLIGHT - 0.5 * GRAVITY * FLIGHT;
-
-    await frames(FLIGHT * 1000, (t) => {
-        const time = t * FLIGHT;
-        const x = release.x + vx * time;
-        const y = release.y + vy * time + 0.5 * GRAVITY * time * time;
-        // face the direction of travel
-        const angle = Math.atan2(vy + GRAVITY * time, vx) * 180 / Math.PI;
-        place(x, y, angle * 0.35, 1 - 0.92 * Math.pow(t, 2.2));
-    });
+    runner.classList.add('running');
+    await played(greeter.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${dx * 0.55}px, ${dy * 0.4 - 45}px) scale(0.7)`, opacity: 1, offset: 0.55 },
+        { transform: `translate(${dx}px, ${dy}px) scale(0.08)`, opacity: 0.9 }
+    ], { duration: 1500, easing: 'cubic-bezier(.45,.05,.55,1)', fill: 'forwards' }));
     if (cancelled) return;
 
     greeter.style.display = 'none';
-    finished = true;
-    clearTimeout(watchdog);
 
-    // 4. the button takes the hit, then the panel grows out of it
+    // 4. the button takes the hit, then opens
     chatbotToggle.animate([
         { transform: 'scale(1)' },
         { transform: 'scale(1.35)' },
@@ -1035,6 +908,6 @@ userMessage.addEventListener('keypress', (e) => {
         { transform: 'scale(1)' }
     ], { duration: 520, easing: 'cubic-bezier(.34,1.56,.64,1)' });
 
-    await wait(200);
+    await wait(240);
     openChat();
 })();
