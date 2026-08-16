@@ -447,6 +447,56 @@
             #character-root { animation: none; }
             .think-dot { animation: none; }
         }
+
+        /* INTRO GREETER */
+        #greeter {
+            left: 0;
+            top: 0;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        #greeter-bubble {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translate(-50%, 6px);
+            margin-bottom: 10px;
+            padding: 0.6rem 1rem;
+            border-radius: 1rem;
+            white-space: nowrap;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--light);
+            background: rgba(30, 41, 79, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.45);
+            box-shadow: 0 12px 30px rgba(2, 6, 23, 0.55);
+            opacity: 0;
+            transition: opacity 260ms ease, transform 260ms ease;
+        }
+
+        #greeter-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -7px;
+            border: 7px solid transparent;
+            border-top-color: rgba(99, 102, 241, 0.45);
+        }
+
+        #greeter-bubble.show { opacity: 1; transform: translate(-50%, 0); }
+
+        @keyframes greeterRunBob {
+            0%, 100% { transform: translateY(0) rotate(-4deg); }
+            50%      { transform: translateY(-9px) rotate(4deg); }
+        }
+
+        #greeter-avatar.running { animation: greeterRunBob 300ms ease-in-out infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+            #greeter { display: none; }
+        }
     </style>
 </head>
 <body class="bg-dots">
@@ -1144,12 +1194,18 @@
             <i class="fas fa-arrow-up"></i>
         </button>
 
+        <!-- Intro greeter: the character walks in, says hi, then hops into the chat -->
+        <div id="greeter" class="fixed z-40 pointer-events-none" aria-hidden="true">
+            <div id="greeter-bubble">Hi! How are you?</div>
+            <svg id="greeter-avatar" class="w-28 h-32 md:w-36 md:h-40"><use href="#harish-character"></use></svg>
+        </div>
+
         <!-- Chatbot Widget -->
         <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
             <button id="chatbot-toggle" class="bg-primary text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center hover:bg-primary-light transition-all duration-300 hover:scale-110">
                 <i class="fas fa-robot text-2xl"></i>
             </button>
-            <div id="chatbot-popup" class="absolute bottom-20 right-0 w-[calc(100vw-3rem)] max-w-[22rem] rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <div id="chatbot-popup" class="hidden absolute bottom-20 right-0 w-[calc(100vw-3rem)] max-w-[22rem] rounded-xl shadow-2xl flex flex-col overflow-hidden">
                 <div class="bg-darker p-3 border-b border-gray-700 flex items-center">
                     <div class="bg-primary/10 text-primary p-2 rounded-full mr-3">
                         <i class="fas fa-robot"></i>
@@ -1175,7 +1231,7 @@
 
                 <div id="chat-messages" class="h-52 p-4 overflow-y-auto text-sm space-y-3">
                     <div class="bot-message rounded-lg p-3 max-w-[80%]">
-                        <p>Hi! I'm Harish's AI assistant. Ask me anything about his skills, experience, or projects.</p>
+                        <p>Hi! How are you? I'm Harish's AI assistant — ask me anything about his skills, experience, or projects.</p>
                     </div>
                 </div>
                 

@@ -298,13 +298,7 @@ STYLE
 - Never invent employers, dates, metrics or technologies that aren't listed above.
 `;
 
-// Show chatbot popup after page loads
-window.addEventListener('load', () => {
-    chatbotPopup.classList.remove('hidden');
-    setTimeout(() => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 300);
-});
+// The chat panel is opened by the intro sequence at the bottom of this file.
 
 // GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
@@ -501,7 +495,7 @@ const Avatar = (function () {
     // updates every copy on the page, so the About illustration talks too.
     const character = document.getElementById('character-root');
     const stages = [document.getElementById('harish-avatar'), document.getElementById('about-avatar')].filter(Boolean);
-    if (!character) return { speak() {}, stop() {}, think() {}, idle() {}, prime() {}, isVoiceOn: () => false, toggleVoice() {} };
+    if (!character) return { speak() {}, greet() {}, stop() {}, think() {}, idle() {}, prime() {}, isVoiceOn: () => false, toggleVoice() {} };
 
     const svg = character;
     const mouth = document.getElementById('mouth-shape');
@@ -628,6 +622,22 @@ const Avatar = (function () {
         window.speechSynthesis.speak(utterance);
     }
 
+    // Browsers refuse speech that isn't tied to a user gesture, so a greeting on
+    // page load usually stays silent. Try anyway, then fall back to the visitor's
+    // first interaction — and give up after 30s rather than ambushing them later.
+    function greet(text) {
+        if (!supportsSpeech || !voiceOn) return;
+        speak(text);
+        setTimeout(() => {
+            if (window.speechSynthesis.speaking || window.speechSynthesis.pending) return;
+            const events = ['pointerdown', 'keydown', 'scroll'];
+            const off = () => events.forEach(e => window.removeEventListener(e, once));
+            const once = () => { off(); prime(); speak(text); };
+            events.forEach(e => window.addEventListener(e, once, { once: true }));
+            setTimeout(off, 30000);
+        }, 900);
+    }
+
     function stop() {
         if (supportsSpeech) window.speechSynthesis.cancel();
         stopMouth();
@@ -652,7 +662,7 @@ const Avatar = (function () {
         return voiceOn;
     }
 
-    return { speak, stop, think, idle, prime, toggleVoice, isVoiceOn: () => voiceOn, supported: supportsSpeech };
+    return { speak, greet, stop, think, idle, prime, toggleVoice, isVoiceOn: () => voiceOn, supported: supportsSpeech };
 })();
 
 // Voice on/off button in the chat header
@@ -751,3 +761,90 @@ sendMessage.addEventListener('click', sendChatMessage);
 userMessage.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendChatMessage();
 });
+
+
+/* ------------------------------------------------------------------
+   Intro: the character walks in from the left, says hello, then runs
+   across the page and hops into the chat button, which opens the panel.
+------------------------------------------------------------------- */
+(async function playIntro() {
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const greeter = document.getElementById('greeter');
+    const bubble = document.getElementById('greeter-bubble');
+    const runner = document.getElementById('greeter-avatar');
+    const GREETING = "Hi! How are you? Ask me anything about my work.";
+
+    const openChat = () => {
+        chatbotPopup.classList.remove('hidden');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        Avatar.greet(GREETING);
+    };
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!greeter || !runner || reducedMotion || typeof greeter.animate !== 'function') {
+        await wait(600);
+        openChat();
+        return;
+    }
+
+    // If the visitor opens the chat themselves, get out of the way.
+    let cancelled = false;
+    const bailOut = () => { cancelled = true; greeter.style.display = 'none'; };
+    chatbotToggle.addEventListener('click', bailOut, { once: true });
+
+    if (document.readyState !== 'complete') {
+        await new Promise(resolve => window.addEventListener('load', resolve, { once: true }));
+    }
+    await wait(500);
+    if (cancelled) return;
+
+    // Stand him in the bottom-left so he never covers the hero content, and so
+    // the run across to the chat button reads as crossing the page.
+    const size = greeter.getBoundingClientRect();
+    greeter.style.left = Math.max(16, window.innerWidth * 0.08) + 'px';
+    greeter.style.top = Math.max(20, window.innerHeight - size.height - 28) + 'px';
+
+    // 1. walk in
+    runner.classList.add('running');
+    await greeter.animate([
+        { transform: 'translateX(-180px) scale(0.9)', opacity: 0 },
+        { transform: 'translateX(0) scale(1)', opacity: 1 }
+    ], { duration: 950, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }).finished;
+    if (cancelled) return;
+
+    // 2. greet
+    runner.classList.remove('running');
+    bubble.classList.add('show');
+    await wait(2300);
+    if (cancelled) return;
+    bubble.classList.remove('show');
+    await wait(300);
+    if (cancelled) return;
+
+    // 3. run across and jump into the chat button
+    const target = chatbotToggle.getBoundingClientRect();
+    const from = greeter.getBoundingClientRect();
+    const dx = (target.left + target.width / 2) - (from.left + from.width / 2);
+    const dy = (target.top + target.height / 2) - (from.top + from.height / 2);
+
+    runner.classList.add('running');
+    await greeter.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${dx * 0.55}px, ${dy * 0.4 - 45}px) scale(0.7)`, opacity: 1, offset: 0.55 },
+        { transform: `translate(${dx}px, ${dy}px) scale(0.08)`, opacity: 0.9 }
+    ], { duration: 1500, easing: 'cubic-bezier(.45,.05,.55,1)', fill: 'forwards' }).finished;
+    if (cancelled) return;
+
+    greeter.style.display = 'none';
+
+    // 4. the button takes the hit, then opens
+    chatbotToggle.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.35)' },
+        { transform: 'scale(0.92)' },
+        { transform: 'scale(1)' }
+    ], { duration: 520, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+
+    await wait(240);
+    openChat();
+})();
