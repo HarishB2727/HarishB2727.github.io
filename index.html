@@ -391,15 +391,11 @@
         .skill-category:nth-child(5) .skill-header { animation: float 6s ease-in-out infinite 4s; }
         .skill-category:nth-child(6) .skill-header { animation: float 6s ease-in-out infinite 5s; }
 
-        /* TALKING AVATAR */
-        #avatar-stage {
-            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.18), rgba(2, 6, 23, 0.9));
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        #harish-avatar {
-            animation: avatarBreathe 4.5s ease-in-out infinite;
+        /* TALKING AVATAR — the character sits on the page with no frame */
+        #character-root {
+            transform-box: fill-box;
             transform-origin: 50% 100%;
+            animation: avatarBreathe 4.5s ease-in-out infinite;
         }
 
         @keyframes avatarBreathe {
@@ -407,7 +403,7 @@
             50%      { transform: translateY(-3px) rotate(-0.7deg); }
         }
 
-        #harish-avatar.is-speaking { animation-duration: 2.2s; }
+        #character-root.is-speaking { animation-duration: 2.2s; }
 
         .eye-group {
             transform-box: fill-box;
@@ -425,7 +421,7 @@
             transition: transform 250ms ease;
         }
 
-        #harish-avatar.is-thinking #avatar-brows { transform: translateY(-3px); }
+        #character-root.is-thinking #avatar-brows { transform: translateY(-3px); }
 
         #mouth-shape, #mouth-clip-shape { transition: none; }
 
@@ -448,7 +444,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            #harish-avatar { animation: none; }
+            #character-root { animation: none; }
             .think-dot { animation: none; }
         }
     </style>
@@ -486,6 +482,106 @@
             </div>
         </div>
     </nav>
+
+    <!-- Shared animated character. Defined once, used in the About section and
+         the chat panel; the script animates this original, both copies follow. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <linearGradient id="skin-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c98a58"></stop>
+                <stop offset="100%" stop-color="#a2673c"></stop>
+            </linearGradient>
+            <linearGradient id="hair-grad" x1="0.2" y1="0" x2="0.9" y2="1">
+                <stop offset="0%" stop-color="#2e2536"></stop>
+                <stop offset="55%" stop-color="#1b1521"></stop>
+                <stop offset="100%" stop-color="#120e16"></stop>
+            </linearGradient>
+            <linearGradient id="jacket-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2b3244"></stop>
+                <stop offset="100%" stop-color="#1a2030"></stop>
+            </linearGradient>
+            <linearGradient id="polo-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#e23a48"></stop>
+                <stop offset="100%" stop-color="#b81f2d"></stop>
+            </linearGradient>
+            <radialGradient id="cheek-grad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#d4703f" stop-opacity="0.35"></stop>
+                <stop offset="100%" stop-color="#d4703f" stop-opacity="0"></stop>
+            </radialGradient>
+            <clipPath id="mouth-clip">
+                <ellipse id="mouth-clip-shape" cx="100" cy="106" rx="11" ry="1.2"></ellipse>
+            </clipPath>
+
+            <symbol id="harish-character" viewBox="30 14 140 172">
+                <g id="character-root">
+                    <!-- shoulders -->
+                    <path d="M12 190 C18 160 46 145 74 139 L126 139 C154 145 182 160 188 190 Z" fill="url(#jacket-grad)"></path>
+                    <path d="M74 139 C78 152 84 162 88 168 L80 190 L58 190 C60 168 66 150 74 139 Z" fill="#161c2a" opacity="0.55"></path>
+                    <path d="M126 139 C122 152 116 162 112 168 L120 190 L142 190 C140 168 134 150 126 139 Z" fill="#161c2a" opacity="0.55"></path>
+                    <!-- polo -->
+                    <path d="M82 140 L100 178 L118 140 L110 136 L100 152 L90 136 Z" fill="url(#polo-grad)"></path>
+                    <path d="M90 136 L100 152 L110 136 L104 133 L100 140 L96 133 Z" fill="#9c1a26"></path>
+                    <!-- neck -->
+                    <path d="M87 104 L113 104 L113 133 C113 141 87 141 87 133 Z" fill="#a97046"></path>
+                    <path d="M87 104 L113 104 L113 113 C107 119 93 119 87 113 Z" fill="#8a5530"></path>
+
+                    <!-- ears -->
+                    <ellipse cx="65" cy="84" rx="6" ry="9" fill="#b07a4a"></ellipse>
+                    <ellipse cx="135" cy="84" rx="6" ry="9" fill="#b07a4a"></ellipse>
+                    <!-- face -->
+                    <path d="M67 64 C67 41 81 29 100 29 C119 29 133 41 133 64 L133 86 C133 110 118 125 100 125 C82 125 67 110 67 86 Z" fill="url(#skin-grad)"></path>
+                    <ellipse cx="78" cy="92" rx="8" ry="6" fill="url(#cheek-grad)"></ellipse>
+                    <ellipse cx="122" cy="92" rx="8" ry="6" fill="url(#cheek-grad)"></ellipse>
+
+                    <!-- sideburns -->
+                    <path d="M67 56 L73 56 C73 64 73 70 72 74 L67 71 Z" fill="url(#hair-grad)"></path>
+                    <path d="M133 56 L127 56 C127 64 127 70 128 74 L133 71 Z" fill="url(#hair-grad)"></path>
+
+                    <!-- hair: full modern quiff with a fringe over the forehead -->
+                    <path d="M100 19 C127 19 142 38 139 65 C138 72 137 76 136 79 C134 64 130 55 124 50 C116 56 104 58 92 56 C84 55 78 53 74 50 C69 56 65 65 64 77 C63 75 62 71 61 65 C58 38 73 19 100 19 Z" fill="url(#hair-grad)"></path>
+                    <path d="M104 22 C121 21 133 30 137 43 C129 32 117 26 104 27 Z" fill="#3b3145" opacity="0.8"></path>
+                    <path d="M78 26 C86 21 96 20 104 22 C94 23 85 27 78 33 Z" fill="#3b3145" opacity="0.45"></path>
+
+                    <!-- brows -->
+                    <g id="avatar-brows">
+                        <path d="M80 69 C84.5 65.5 92.5 65.5 96 68.5" stroke="#241c2b" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+                        <path d="M104 68.5 C107.5 65.5 115.5 65.5 120 69" stroke="#241c2b" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+                    </g>
+
+                    <!-- eyes -->
+                    <g class="eye-group" id="eye-left">
+                        <ellipse cx="86" cy="81" rx="7.2" ry="5" fill="#fbf6ef"></ellipse>
+                        <circle class="pupil" cx="86" cy="81.4" r="3.7" fill="#42291a"></circle>
+                        <circle class="pupil" cx="86" cy="81.4" r="1.8" fill="#14100c"></circle>
+                        <circle cx="87.6" cy="79.8" r="1.1" fill="#ffffff" opacity="0.9"></circle>
+                        <path d="M79 79 C82 75.4 90 75.4 93 79" stroke="#2f2015" stroke-width="1.9" stroke-linecap="round" fill="none"></path>
+                        <path d="M80 85.8 C83 87.6 89 87.6 92 85.8" stroke="#8a5530" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.55"></path>
+                    </g>
+                    <g class="eye-group" id="eye-right">
+                        <ellipse cx="114" cy="81" rx="7.2" ry="5" fill="#fbf6ef"></ellipse>
+                        <circle class="pupil" cx="114" cy="81.4" r="3.7" fill="#42291a"></circle>
+                        <circle class="pupil" cx="114" cy="81.4" r="1.8" fill="#14100c"></circle>
+                        <circle cx="115.6" cy="79.8" r="1.1" fill="#ffffff" opacity="0.9"></circle>
+                        <path d="M107 79 C110 75.4 118 75.4 121 79" stroke="#2f2015" stroke-width="1.9" stroke-linecap="round" fill="none"></path>
+                        <path d="M108 85.8 C111 87.6 117 87.6 120 85.8" stroke="#8a5530" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.55"></path>
+                    </g>
+
+                    <!-- nose -->
+                    <path d="M100 82 L96.5 90 C98.5 92 101.5 92 103.5 90" stroke="#8a5530" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+
+                    <!-- mouth -->
+                    <g id="avatar-mouth">
+                        <ellipse id="mouth-shape" cx="100" cy="106" rx="11" ry="1.2" fill="#3d1017"></ellipse>
+                        <g clip-path="url(#mouth-clip)">
+                            <rect x="87" y="97" width="26" height="5" fill="#f8f3ec"></rect>
+                            <ellipse cx="100" cy="116" rx="6.5" ry="4.5" fill="#b84f62"></ellipse>
+                        </g>
+                        <path id="mouth-line" d="M89.5 104 C94 109.5 106 109.5 110.5 104" stroke="#8c4147" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+                    </g>
+                </g>
+            </symbol>
+        </defs>
+    </svg>
 
     <main class="relative z-10">
         <!-- Hero Section -->
@@ -543,14 +639,9 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 font-display animate-text">About Me</h2>
                 <div class="flex flex-col md:flex-row items-center">
                     <div class="md:w-1/3 mb-10 md:mb-0 flex justify-center animate-text animate-delay-1">
-                        <div class="relative">
-    <!--                         <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80" 
-                             alt="About Me" 
-                             class="rounded-lg shadow-xl w-64 h-64 md:w-72 md:h-72 object-cover hover-grow"> -->
-                            <div class="absolute -bottom-4 -right-4 bg-primary text-white p-3 rounded-full shadow-lg pulse">
-                                <i class="fas fa-code text-xl"></i>
-                            </div>
-                        </div>
+                        <svg id="about-avatar" class="w-56 h-64 md:w-64 md:h-72" role="img" aria-label="Illustration of Harish Bejawada">
+                            <use href="#harish-character"></use>
+                        </svg>
                     </div>
                     <div class="md:w-2/3 md:pl-12">
                         <h3 class="text-2xl font-semibold mb-4 font-display animate-text animate-delay-2">Who am I?</h3>
@@ -1074,77 +1165,8 @@
 
                 <!-- Animated avatar -->
                 <div id="avatar-stage" class="relative flex justify-center overflow-hidden">
-                    <svg id="harish-avatar" viewBox="50 8 120 148" class="w-32 h-40" aria-hidden="true">
-                        <defs>
-                            <clipPath id="mouth-clip">
-                                <ellipse id="mouth-clip-shape" cx="110" cy="116" rx="13" ry="2"></ellipse>
-                            </clipPath>
-                            <radialGradient id="avatar-glow" cx="50%" cy="45%" r="55%">
-                                <stop offset="0%" stop-color="#6366f1" stop-opacity="0.35"></stop>
-                                <stop offset="100%" stop-color="#6366f1" stop-opacity="0"></stop>
-                            </radialGradient>
-                        </defs>
-
-                        <ellipse cx="110" cy="95" rx="95" ry="90" fill="url(#avatar-glow)"></ellipse>
-
-                        <g id="avatar-body">
-                            <!-- shoulders: jacket -->
-                            <path d="M18 190 C22 158 52 143 78 137 L142 137 C168 143 198 158 202 190 Z" fill="#1c2130"></path>
-                            <!-- red polo -->
-                            <path d="M84 138 L110 176 L136 138 L124 133 L110 148 L96 133 Z" fill="#d92b3a"></path>
-                            <path d="M96 133 L110 148 L124 133 L118 130 L110 138 L102 130 Z" fill="#b31f2c"></path>
-                            <!-- neck -->
-                            <path d="M94 108 L126 108 L126 134 C126 141 94 141 94 134 Z" fill="#8a5a37"></path>
-                        </g>
-
-                        <g id="avatar-head">
-                            <!-- ears -->
-                            <ellipse cx="70" cy="88" rx="7" ry="10" fill="#a86b41"></ellipse>
-                            <ellipse cx="150" cy="88" rx="7" ry="10" fill="#a86b41"></ellipse>
-                            <!-- face -->
-                            <path d="M74 66 C74 40 90 28 110 28 C130 28 146 40 146 66 L146 88 C146 112 132 124 110 124 C88 124 74 112 74 88 Z" fill="#b0754a"></path>
-                            <!-- beard -->
-                            <path d="M76 84 C76 112 90 124 110 124 C130 124 144 112 144 84 C144 104 132 110 110 110 C88 110 76 104 76 84 Z" fill="#1a1418"></path>
-                            <path d="M97 108 C101 104 119 104 123 108 C119 114 101 114 97 108 Z" fill="#1a1418"></path>
-                            <!-- sideburns -->
-                            <path d="M74 60 L82 60 C82 76 82 88 80 94 L74 90 Z" fill="#16121a"></path>
-                            <path d="M146 60 L138 60 C138 76 138 88 140 94 L146 90 Z" fill="#16121a"></path>
-                            <!-- hair -->
-                            <path d="M72 74 C68 44 84 24 110 24 C136 24 152 42 148 72 C144 56 136 48 122 46 C112 56 92 56 84 48 C76 54 73 62 72 74 Z" fill="#16121a"></path>
-                            <path d="M96 28 C104 12 138 14 148 32 C152 40 150 50 148 56 C146 40 132 28 112 30 Z" fill="#16121a"></path>
-                            <path d="M118 22 C132 18 144 26 148 38 C140 28 130 24 118 26 Z" fill="#241d29"></path>
-                            <!-- brows -->
-                            <g id="avatar-brows">
-                                <path d="M84 72 C90 67 102 67 107 71" stroke="#16121a" stroke-width="5" stroke-linecap="round" fill="none"></path>
-                                <path d="M113 71 C118 67 130 67 136 72" stroke="#16121a" stroke-width="5" stroke-linecap="round" fill="none"></path>
-                            </g>
-                            <!-- eyes -->
-                            <g class="eye-group" id="eye-left">
-                                <ellipse cx="95" cy="84" rx="7.6" ry="5.2" fill="#fdfbf7"></ellipse>
-                                <circle class="pupil" cx="95" cy="84" r="3.9" fill="#241a12"></circle>
-                                <circle cx="96.5" cy="82.4" r="1.1" fill="#ffffff" opacity="0.8"></circle>
-                                <path d="M87.6 81.4 C91 77.6 99 77.6 102.4 81.4" stroke="#3a2a1e" stroke-width="1.7" stroke-linecap="round" fill="none"></path>
-                            </g>
-                            <g class="eye-group" id="eye-right">
-                                <ellipse cx="125" cy="84" rx="7.6" ry="5.2" fill="#fdfbf7"></ellipse>
-                                <circle class="pupil" cx="125" cy="84" r="3.9" fill="#241a12"></circle>
-                                <circle cx="126.5" cy="82.4" r="1.1" fill="#ffffff" opacity="0.8"></circle>
-                                <path d="M117.6 81.4 C121 77.6 129 77.6 132.4 81.4" stroke="#3a2a1e" stroke-width="1.7" stroke-linecap="round" fill="none"></path>
-                            </g>
-                            <!-- nose -->
-                            <path d="M110 87 L105.5 99 C108 101.5 112 101.5 114.5 99" stroke="#95633c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                            <circle cx="106" cy="101" r="1.2" fill="#7d4f2e"></circle>
-                            <circle cx="114" cy="101" r="1.2" fill="#7d4f2e"></circle>
-                            <!-- mouth -->
-                            <g id="avatar-mouth">
-                                <ellipse id="mouth-shape" cx="110" cy="116" rx="13" ry="2" fill="#43121a"></ellipse>
-                                <g clip-path="url(#mouth-clip)">
-                                    <rect x="95" y="107" width="30" height="5" fill="#f7f2ee"></rect>
-                                    <ellipse cx="110" cy="126" rx="8" ry="5" fill="#c4536a"></ellipse>
-                                </g>
-                                <path id="mouth-line" d="M97 115 C103 119 117 119 123 115" stroke="#5a2028" stroke-width="2" stroke-linecap="round" fill="none"></path>
-                            </g>
-                        </g>
+                    <svg id="harish-avatar" class="w-32 h-40" aria-hidden="true">
+                        <use href="#harish-character"></use>
                     </svg>
                     <div id="avatar-thinking" class="absolute top-3 right-6 hidden">
                         <span class="think-dot"></span><span class="think-dot"></span><span class="think-dot"></span>

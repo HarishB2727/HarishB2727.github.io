@@ -497,9 +497,13 @@ document.addEventListener('DOMContentLoaded', () => {
    assistant's reply. No server, no libraries — works on static hosting.
 ------------------------------------------------------------------- */
 const Avatar = (function () {
-    const svg = document.getElementById('harish-avatar');
-    if (!svg) return { speak() {}, stop() {}, think() {}, idle() {}, isVoiceOn: () => false, toggleVoice() {} };
+    // One character definition, rendered twice via <use>. Animating the original
+    // updates every copy on the page, so the About illustration talks too.
+    const character = document.getElementById('character-root');
+    const stages = [document.getElementById('harish-avatar'), document.getElementById('about-avatar')].filter(Boolean);
+    if (!character) return { speak() {}, stop() {}, think() {}, idle() {}, prime() {}, isVoiceOn: () => false, toggleVoice() {} };
 
+    const svg = character;
     const mouth = document.getElementById('mouth-shape');
     const mouthClip = document.getElementById('mouth-clip-shape');
     const mouthLine = document.getElementById('mouth-line');
@@ -523,8 +527,10 @@ const Avatar = (function () {
 
     // --- eyes follow the cursor a little ---
     document.addEventListener('mousemove', (e) => {
-        const box = svg.getBoundingClientRect();
-        if (!box.width) return;
+        // Measure whichever copy is on screen — the hidden definition has no size
+        const stage = stages.find(el => el.getBoundingClientRect().width > 0);
+        if (!stage) return;
+        const box = stage.getBoundingClientRect();
         const dx = Math.max(-1, Math.min(1, (e.clientX - (box.left + box.width / 2)) / (box.width * 1.5)));
         const dy = Math.max(-1, Math.min(1, (e.clientY - (box.top + box.height / 2)) / (box.height * 1.5)));
         pupils.forEach(p => { p.style.transform = `translate(${dx * 2.2}px, ${dy * 1.8}px)`; });
