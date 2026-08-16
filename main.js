@@ -510,6 +510,7 @@ const Avatar = (function () {
     let amplitude = 0;
     let mouthTimer = null;
     let primed = false;
+    let speaking = false;
 
     // --- idle life: blinking ---
     function blink() {
@@ -545,16 +546,23 @@ const Avatar = (function () {
         svg.classList.add('is-speaking');
         if (mouthTimer) return;
         let tick = 0;
+        let quiet = 0;
         mouthTimer = setInterval(() => {
             // WebKit never fires boundary events, so the mouth runs on its own
-            // syllable-ish oscillator and stops when synthesis stops.
-            if (supportsSpeech && !window.speechSynthesis.speaking) { stopMouth(); return; }
+            // syllable-ish oscillator. Speech goes quiet between sentences, so
+            // only give up after it has stayed silent for half a second.
+            if (supportsSpeech && !window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
+                quiet += 1;
+                if (!speaking || quiet > 7) { stopMouth(); return; }
+            } else {
+                quiet = 0;
+            }
             tick += 1;
-            const syllable = Math.abs(Math.sin(tick * 0.95)) * 0.75 + Math.random() * 0.3;
+            const syllable = Math.abs(Math.sin(tick * 1.15)) * 0.75 + Math.random() * 0.3;
             const beat = Math.random() < 0.09 ? 0 : 1; // occasional closed beat, like a pause
             amplitude = Math.max(amplitude * 0.45, syllable * beat);
             setMouth(Math.min(1, amplitude));
-        }, 80);
+        }, 70);
     }
 
     function stopMouth() {
@@ -567,17 +575,28 @@ const Avatar = (function () {
 
     // --- voice ---
     let cachedVoice = null;
+    const MALE_VOICES = ['Rishi', 'Google UK English Male', 'Microsoft Ravi', 'Microsoft Prabhat',
+                         'Microsoft Guy', 'Google US English', 'Daniel', 'Tom', 'Alex', 'Aaron'];
+
+    // Voice quality varies wildly per device. Score what's installed rather than
+    // taking the first name off a list: enhanced/neural voices and network voices
+    // sound human, the old compact ones sound like a robot reading a receipt.
     function pickVoice() {
         if (cachedVoice) return cachedVoice;
-        const voices = window.speechSynthesis.getVoices();
+        const voices = window.speechSynthesis.getVoices().filter(v => v.lang && v.lang.startsWith('en'));
         if (!voices.length) return null;
-        // Rishi is the en-IN male voice on Apple devices — closest to how Harish sounds
-        const preferred = ['Rishi', 'Google UK English Male', 'Microsoft Ravi', 'Microsoft Guy', 'Google US English', 'Daniel', 'Alex'];
-        for (const name of preferred) {
-            const match = voices.find(v => v.name.includes(name));
-            if (match) { cachedVoice = match; return match; }
-        }
-        cachedVoice = voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
+
+        const score = (v) => {
+            let n = 0;
+            if (/(enhanced|premium|neural|natural|siri)/i.test(v.name)) n += 4;
+            if (v.localService === false) n += 2;           // network voices are the good ones
+            if (/^en-IN/.test(v.lang)) n += 2;              // matches Harish's accent
+            if (MALE_VOICES.some(name => v.name.includes(name))) n += 3;
+            if (/(compact|eloquence)/i.test(v.name)) n -= 3;
+            return n;
+        };
+
+        cachedVoice = voices.slice().sort((a, b) => score(b) - score(a))[0];
         return cachedVoice;
     }
     if (supportsSpeech) window.speechSynthesis.onvoiceschanged = () => { cachedVoice = null; pickVoice(); };
@@ -600,6 +619,28 @@ const Avatar = (function () {
             .trim();
     }
 
+    // Conversational pace. A single flat utterance sounds like a robot, so each
+    // sentence is spoken separately with a little rate and pitch variation — the
+    // gaps between them become natural breaths, and no two lines land identically.
+    const BASE_RATE = 1.18;
+    const BASE_PITCH = 1.0;
+
+    function intoSentences(text) {
+        const parts = text.match(/[^.!?]+[.!?]*\s*/g) || [text];
+        const merged = [];
+        parts.forEach(part => {
+            const piece = part.trim();
+            if (!piece) return;
+            // keep fragments like "Hi!" attached so they don't sound clipped
+            if (merged.length && (piece.length < 18 || merged[merged.length - 1].length < 18)) {
+                merged[merged.length - 1] += ' ' + piece;
+            } else {
+                merged.push(piece);
+            }
+        });
+        return merged;
+    }
+
     function speak(text) {
         idle();
         if (!supportsSpeech || !voiceOn) return;
@@ -607,19 +648,28 @@ const Avatar = (function () {
         if (!spoken) return;
 
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(spoken);
         const voice = pickVoice();
-        if (voice) utterance.voice = voice;
-        utterance.rate = 1.03;
-        utterance.pitch = 0.95;
+        const sentences = intoSentences(spoken);
 
-        utterance.onstart = () => { amplitude = 1; startMouth(); };
-        // Where word boundaries are supported they accent the mouth on each word
-        utterance.onboundary = () => { amplitude = 0.8 + Math.random() * 0.3; };
-        utterance.onend = stopMouth;
-        utterance.onerror = stopMouth;
+        speaking = true;
+        amplitude = 1;
+        startMouth();
 
-        window.speechSynthesis.speak(utterance);
+        sentences.forEach((sentence, i) => {
+            const utterance = new SpeechSynthesisUtterance(sentence);
+            if (voice) utterance.voice = voice;
+            utterance.rate = BASE_RATE + (Math.random() * 0.08 - 0.04);
+            utterance.pitch = BASE_PITCH + (Math.random() * 0.06 - 0.03);
+
+            // Where word boundaries are supported they accent the mouth per word
+            utterance.onboundary = () => { amplitude = 0.8 + Math.random() * 0.3; };
+            if (i === sentences.length - 1) {
+                utterance.onend = () => { speaking = false; stopMouth(); };
+            }
+            utterance.onerror = () => { speaking = false; stopMouth(); };
+
+            window.speechSynthesis.speak(utterance);
+        });
     }
 
     // Browsers refuse speech that isn't tied to a user gesture, so a greeting on
@@ -639,6 +689,7 @@ const Avatar = (function () {
     }
 
     function stop() {
+        speaking = false;
         if (supportsSpeech) window.speechSynthesis.cancel();
         stopMouth();
     }
