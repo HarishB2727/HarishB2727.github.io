@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harish Bejawada | Portfolio</title>
+    <title>Harish Bejawada | AI/ML Software Engineer</title>
+    <meta name="description" content="Harish Bejawada — AI/ML Software Engineer building agentic AI systems, RAG pipelines and production ML at scale.">
+    <script src="config.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -388,6 +390,67 @@
         .skill-category:nth-child(4) .skill-header { animation: float 6s ease-in-out infinite 3s; }
         .skill-category:nth-child(5) .skill-header { animation: float 6s ease-in-out infinite 4s; }
         .skill-category:nth-child(6) .skill-header { animation: float 6s ease-in-out infinite 5s; }
+
+        /* TALKING AVATAR */
+        #avatar-stage {
+            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.18), rgba(2, 6, 23, 0.9));
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        #harish-avatar {
+            animation: avatarBreathe 4.5s ease-in-out infinite;
+            transform-origin: 50% 100%;
+        }
+
+        @keyframes avatarBreathe {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50%      { transform: translateY(-3px) rotate(-0.7deg); }
+        }
+
+        #harish-avatar.is-speaking { animation-duration: 2.2s; }
+
+        .eye-group {
+            transform-box: fill-box;
+            transform-origin: center;
+            transition: transform 90ms ease;
+        }
+
+        .eye-group.blink { transform: scaleY(0.08); }
+
+        .pupil { transition: transform 220ms ease; }
+
+        #avatar-brows {
+            transform-box: fill-box;
+            transform-origin: center;
+            transition: transform 250ms ease;
+        }
+
+        #harish-avatar.is-thinking #avatar-brows { transform: translateY(-3px); }
+
+        #mouth-shape, #mouth-clip-shape { transition: none; }
+
+        .think-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 3px;
+            border-radius: 9999px;
+            background: var(--primary-light);
+            animation: thinkPulse 1.2s ease-in-out infinite;
+        }
+
+        .think-dot:nth-child(2) { animation-delay: 0.2s; }
+        .think-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes thinkPulse {
+            0%, 100% { opacity: 0.25; transform: translateY(0); }
+            50%      { opacity: 1; transform: translateY(-4px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #harish-avatar { animation: none; }
+            .think-dot { animation: none; }
+        }
     </style>
 </head>
 <body class="bg-dots">
@@ -433,9 +496,9 @@
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 font-display animate-text">
                         Hi, I'm <span class="text-gradient">Harish Bejawada</span>
                     </h1>
-                    <h2 class="text-xl md:text-2xl text-gray-300 mb-6 animate-text animate-delay-1">Software Engineer</h2>
+                    <h2 class="text-xl md:text-2xl text-gray-300 mb-6 animate-text animate-delay-1">AI/ML Software Engineer</h2>
                     <p class="text-lg text-gray-400 mb-8 max-w-lg animate-text animate-delay-2">
-                        Crafting elegant digital experiences with clean code and thoughtful design.
+                        Building agentic AI systems, RAG pipelines and production ML — from prototype to reliable, evaluated deployment.
                     </p>
                     <div class="flex space-x-4 animate-text animate-delay-3">
                         <a href="#contact" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-light transition duration-300 btn-hover">
@@ -492,23 +555,23 @@
                     <div class="md:w-2/3 md:pl-12">
                         <h3 class="text-2xl font-semibold mb-4 font-display animate-text animate-delay-2">Who am I?</h3>
                         <p class="text-gray-400 mb-6 text-lg animate-text animate-delay-3">
-                            I'm a <span class="text-gradient font-medium">Full-Stack Software Engineer</span> with over 3.5 years of experience crafting scalable, cloud-native applications. I specialize in Java, Python, React, and AWS, and I'm passionate about building systems that are both performant and human-friendly. I enjoy solving real-world problems with code — whether it's designing backend microservices or exploring the potential of AI/ML in everyday applications.
+                            I'm an <span class="text-gradient font-medium">AI/ML Software Engineer</span> with 3+ years of experience designing and deploying agent-based systems using LLMs, tools, memory, and planning for enterprise automation. I work across multi-agent orchestration, RAG pipelines, and human-in-the-loop safety patterns — in Python, LangGraph, LangChain, and AWS Bedrock — shipping production systems with measurable accuracy, reliability, and task success.
                         </p>
                         <p class="text-gray-400 mb-8 text-lg animate-text animate-delay-4">
-                            When I'm not coding, you can find me exploring new design trends, contributing to open source, or hiking in the mountains. I believe in continuous learning and pushing the boundaries of what's possible on the web.
+                            Before agents, I spent years on applied NLP and production ML: fine-tuning transformers, building semantic search, and running the MLOps around them. I care about the unglamorous half of AI — evaluation, guardrails, monitoring, and getting a prototype all the way to something people can depend on.
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate-text animate-delay-5">
                             <div>
                                 <p class="font-medium text-gray-300">Name: <span class="font-normal text-gray-400">Harish Bejawada</span></p>
-                                <p class="font-medium text-gray-300">Email: <span class="font-normal text-gray-400">b.harish2727@gmail.com</span></p>
+                                <p class="font-medium text-gray-300">Email: <span class="font-normal text-gray-400">b.harish2727us@gmail.com</span></p>
                             </div>
                             <div>
-                                <p class="font-medium text-gray-300">Location: <span class="font-normal text-gray-400">NewYork, US</span></p>
+                                <p class="font-medium text-gray-300">Location: <span class="font-normal text-gray-400">United States</span></p>
                                 <p class="font-medium text-gray-300">Availability: <span class="font-normal text-gray-400">Open to opportunities</span></p>
                             </div>
                         </div>
                         <div class="flex flex-wrap gap-4 animate-text animate-delay-6">
-                            <a href="Harish_Bejawada_SE.pdf" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-light transition duration-300 flex items-center btn-hover" download >
+                            <a href="Harish_Bejawada_AI_ML_Engineer.pdf" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-light transition duration-300 flex items-center btn-hover" download >
                                 <i class="fas fa-download mr-3"></i> Download CV
                             </a>
                             <a href="#contact" class="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg hover:border-primary hover:text-white transition duration-300 flex items-center">
@@ -527,143 +590,199 @@
                 
                 <!-- Skills Categories -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Front End Skills -->
+                    <!-- Agentic AI & LLMs -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-robot text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Agentic AI & LLMs</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">LangGraph</span>
+                                <span class="skill-tag">LangChain</span>
+                                <span class="skill-tag">LlamaIndex</span>
+                                <span class="skill-tag">Semantic Kernel</span>
+                                <span class="skill-tag">Function Calling / Tool Use</span>
+                                <span class="skill-tag">MCP</span>
+                                <span class="skill-tag">Multi-Agent Orchestration</span>
+                                <span class="skill-tag">Planning & Memory</span>
+                                <span class="skill-tag">RAG</span>
+                                <span class="skill-tag">Prompt Engineering</span>
+                                <span class="skill-tag">Agent Evals (LLM-as-judge)</span>
+                                <span class="skill-tag">Guardrails</span>
+                                <span class="skill-tag">Human-in-the-Loop</span>
+                                <span class="skill-tag">OpenAI API</span>
+                                <span class="skill-tag">Anthropic API</span>
+                                <span class="skill-tag">AWS Bedrock</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI & Machine Learning -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-brain text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">AI & Machine Learning</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">PyTorch</span>
+                                <span class="skill-tag">TensorFlow</span>
+                                <span class="skill-tag">Scikit-learn</span>
+                                <span class="skill-tag">Hugging Face Transformers</span>
+                                <span class="skill-tag">BERT / RoBERTa</span>
+                                <span class="skill-tag">Sentence-Transformers</span>
+                                <span class="skill-tag">XGBoost</span>
+                                <span class="skill-tag">LightGBM</span>
+                                <span class="skill-tag">NLP</span>
+                                <span class="skill-tag">Time-Series</span>
+                                <span class="skill-tag">Anomaly Detection</span>
+                                <span class="skill-tag">Generative AI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MLOps & LLMOps -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-diagram-project text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">MLOps & LLMOps</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">AWS SageMaker</span>
+                                <span class="skill-tag">MLflow</span>
+                                <span class="skill-tag">Kubeflow</span>
+                                <span class="skill-tag">Model Registry</span>
+                                <span class="skill-tag">A/B Testing</span>
+                                <span class="skill-tag">Drift Monitoring</span>
+                                <span class="skill-tag">Evidently</span>
+                                <span class="skill-tag">Apache Spark (PySpark)</span>
+                                <span class="skill-tag">Docker</span>
+                                <span class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">GitHub Actions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vector DBs & Search -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-magnifying-glass text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Vector DBs & Search</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">FAISS</span>
+                                <span class="skill-tag">Pinecone</span>
+                                <span class="skill-tag">Weaviate</span>
+                                <span class="skill-tag">Elasticsearch</span>
+                                <span class="skill-tag">Redis (vector)</span>
+                                <span class="skill-tag">Hybrid Search (BM25 + semantic)</span>
+                                <span class="skill-tag">Reranking</span>
+                                <span class="skill-tag">Embeddings</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Languages & Backend -->
                     <div class="skill-category group">
                         <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
                             <div class="flex items-center mb-4">
                                 <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
                                     <i class="fas fa-code text-xl"></i>
                                 </div>
-                                <h3 class="text-xl font-semibold font-display">Front End</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">HTML5</span>
-                                <span class="skill-tag">CSS</span>
-                                <span class="skill-tag">JavaScript</span>
-                                <span class="skill-tag">TypeScript</span>
-                                <span class="skill-tag">React JS</span>
-                                <span class="skill-tag">Angular</span>
-                                <span class="skill-tag">AJAX</span>
-                                <span class="skill-tag">Tailwind CSS</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Back End Skills -->
-                    <div class="skill-category group">
-                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                            <div class="flex items-center mb-4">
-                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                    <i class="fas fa-server text-xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold font-display">Back End</h3>
+                                <h3 class="text-xl font-semibold font-display">Languages & Backend</h3>
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Java/J2EE</span>
-                                <span class="skill-tag">C</span>
-                                <span class="skill-tag">C++</span>
-                                <span class="skill-tag">C#</span>
-                                <span class="skill-tag">Node</span>
-                                <span class="skill-tag">PHP</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Databases & Methodologies -->
-                    <div class="skill-category group">
-                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                            <div class="flex items-center mb-4">
-                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                    <i class="fas fa-database text-xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold font-display">Databases & Methodologies</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">MySQL</span>
-                                <span class="skill-tag">PostgreSQL</span>
-                                <span class="skill-tag">Oracle</span>
-                                <span class="skill-tag">MongoDB</span>
-                                <span class="skill-tag">Agile</span>
-                                <span class="skill-tag">Scrum</span>
-                                <span class="skill-tag">SDLC</span>
-                                <span class="skill-tag">TDD</span>
-                                <span class="skill-tag">Redis</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Frameworks & Technologies -->
-                    <div class="skill-category group">
-                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                            <div class="flex items-center mb-4">
-                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                    <i class="fas fa-cubes text-xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold font-display">Frameworks & Technologies</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">Django</span>
-                                <span class="skill-tag">Spring Boot</span>
-                                <span class="skill-tag">JPA</span>
-                                <span class="skill-tag">Hibernate</span>
-                                <span class="skill-tag">Microservices</span>
+                                <span class="skill-tag">SQL</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">Java</span>
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">Bash</span>
+                                <span class="skill-tag">FastAPI</span>
+                                <span class="skill-tag">Node.js</span>
                                 <span class="skill-tag">REST APIs</span>
-                                <span class="skill-tag">Kafka</span>
-                                <span class="skill-tag">Linux</span>
-                                <span class="skill-tag">Spring MVC</span>
-                                <span class="skill-tag">Ruby on Rails</span>
-                                <span class="skill-tag">Next.js</span>
+                                <span class="skill-tag">GraphQL</span>
+                                <span class="skill-tag">WebSockets</span>
+                                <span class="skill-tag">Streaming / SSE</span>
+                                <span class="skill-tag">Microservices</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tools -->
-                    <div class="skill-category group">
-                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
-                            <div class="flex items-center mb-4">
-                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
-                                    <i class="fas fa-tools text-xl"></i>
-                                </div>
-                                <h3 class="text-xl font-semibold font-display">Tools</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">GitHub</span>
-                                <span class="skill-tag">Jenkins</span>
-                                <span class="skill-tag">JIRA</span>
-                                <span class="skill-tag">Docker</span>
-                                <span class="skill-tag">Kubernetes</span>
-                                <span class="skill-tag">SonarQube</span>
-                                <span class="skill-tag">Maven</span>
-                                <span class="skill-tag">JUnit</span>
-                                <span class="skill-tag">VSCode</span>
-                                <span class="skill-tag">Postman</span>
-                                <span class="skill-tag">IntelliJ</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- AWS & Additional Skills -->
+                    <!-- Cloud & DevOps -->
                     <div class="skill-category group">
                         <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
                             <div class="flex items-center mb-4">
                                 <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
                                     <i class="fab fa-aws text-xl"></i>
                                 </div>
-                                <h3 class="text-xl font-semibold font-display">AWS & Additional Skills</h3>
+                                <h3 class="text-xl font-semibold font-display">Cloud & DevOps</h3>
                             </div>
                             <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">ECS</span>
+                                <span class="skill-tag">AWS EC2</span>
                                 <span class="skill-tag">Lambda</span>
-                                <span class="skill-tag">EC2</span>
-                                <span class="skill-tag">SQS</span>
                                 <span class="skill-tag">S3</span>
-                                <span class="skill-tag">VPC</span>
-                                <span class="skill-tag">OOP</span>
-                                <span class="skill-tag">Multi-threading</span>
-                                <span class="skill-tag">Data Structures</span>
-                                <span class="skill-tag">Design Patterns</span>
-                                <span class="skill-tag">SOLID</span>
+                                <span class="skill-tag">ECS</span>
+                                <span class="skill-tag">RDS</span>
+                                <span class="skill-tag">Bedrock</span>
+                                <span class="skill-tag">GCP</span>
+                                <span class="skill-tag">Terraform</span>
+                                <span class="skill-tag">Jenkins</span>
+                                <span class="skill-tag">Linux</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Databases -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-database text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Databases</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">PostgreSQL</span>
+                                <span class="skill-tag">MySQL</span>
+                                <span class="skill-tag">MongoDB</span>
+                                <span class="skill-tag">Redshift</span>
+                                <span class="skill-tag">Redis</span>
+                                <span class="skill-tag">Kafka</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Competencies -->
+                    <div class="skill-category group">
+                        <div class="skill-header bg-dark/50 p-6 rounded-xl border border-gray-800 hover:border-primary/30 transition-all duration-300">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                                    <i class="fas fa-sitemap text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold font-display">Core Competencies</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="skill-tag">Agentic System Design</span>
+                                <span class="skill-tag">Workflow Orchestration</span>
+                                <span class="skill-tag">Evaluation & Reliability</span>
+                                <span class="skill-tag">Client Discovery & Scoping</span>
+                                <span class="skill-tag">Pilot-to-Production Delivery</span>
+                                <span class="skill-tag">Rapid Prototyping</span>
+                                <span class="skill-tag">System Design</span>
+                                <span class="skill-tag">Cross-Functional Collaboration</span>
+                                <span class="skill-tag">Agile</span>
                             </div>
                         </div>
                     </div>
@@ -681,21 +800,19 @@
                         <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">TaskFlow</h3>
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">Multi-Agent Document Intelligence</h3>
                                 <div class="flex space-x-2">
-                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                    <a href="https://github.com/HarishB2727" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
                                         <i class="fab fa-github"></i>
-                                    </a>
-                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                        <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </div>
                             </div>
-                            <p class="text-gray-400 mb-4">A collaborative task management tool with real-time updates and team features.</p>
+                            <p class="text-gray-400 mb-4">Router, retriever, analyst and critique agents that autonomously ingest and index 5k+ PDFs and answer cross-document questions with cited sources. Hybrid search with reranking lifted retrieval relevance 30%; grounding checks cut hallucinations 45%.</p>
                             <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">React</span>
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Firebase</span>
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Tailwind</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">LangGraph</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">FAISS</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Claude API</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">AWS Lambda</span>
                         </div>
                         </div>
                         <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
@@ -706,21 +823,19 @@
                         <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">NexusShop</h3>
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">Enterprise Workflow Automation Agent</h3>
                                 <div class="flex space-x-2">
-                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                    <a href="https://github.com/HarishB2727" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
                                         <i class="fab fa-github"></i>
-                                    </a>
-                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                        <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </div>
                             </div>
-                            <p class="text-gray-400 mb-4">Full-featured e-commerce solution with payment integration and admin dashboard.</p>
+                            <p class="text-gray-400 mb-4">An agent that orchestrates multi-step processes across enterprise APIs, cutting manual task time by 50%. Human-in-the-loop approval on critical actions, evaluated across 200+ scenarios at a 94% task completion rate.</p>
                             <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Next.js</span>
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Node.js</span>
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">MongoDB</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">LangChain</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">FastAPI</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">PostgreSQL</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Kubernetes</span>
                         </div>
                         </div>
                         <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
@@ -731,28 +846,26 @@
                         <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">SocialPulse</h3>
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">RAG-Powered Knowledge Assistant</h3>
                                 <div class="flex space-x-2">
-                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                                    <a href="https://github.com/HarishB2727" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
                                         <i class="fab fa-github"></i>
-                                    </a>
-                                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
-                                        <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </div>
                             </div>
-                            <p class="text-gray-400 mb-4">Comprehensive analytics platform for tracking social media performance.</p>
+                            <p class="text-gray-400 mb-4">A RAG assistant answering questions across 50k+ internal documents with citations. Query rewriting and reranking improved answer accuracy 35%; conversation memory lifted follow-up task success 28%.</p>
                             <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">React</span>
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">D3.js</span>
-                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Express</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Pinecone</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">OpenAI API</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">FastAPI</span>
+                            <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Streamlit</span>
                         </div>
                         </div>
                         <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                     </div>
                 </div>
                 <div class="text-center mt-12 animate-text animate-delay-4">
-                    <a href="#" class="inline-block border border-gray-600 text-gray-300 px-6 py-3 rounded-lg font-medium hover:border-primary hover:text-white transition duration-300">
+                    <a href="https://github.com/HarishB2727" class="inline-block border border-gray-600 text-gray-300 px-6 py-3 rounded-lg font-medium hover:border-primary hover:text-white transition duration-300">
                         View All Projects
                     </a>
                 </div>
@@ -769,12 +882,12 @@
                         <div class="timeline-item relative pl-8 pb-12 animate-text animate-delay-1">
                             <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
                                 <div class="flex flex-col md:flex-row md:items-center mb-4">
-                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Nov 2024 - Present</span>
-                                    <h3 class="text-xl font-semibold font-display">Software Engineer</h3>
+                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Nov 2025 - Present</span>
+                                    <h3 class="text-xl font-semibold font-display">Software Engineer — AI-Driven Financial Intelligence</h3>
                                 </div>
-                                <h4 class="text-lg text-primary mb-4">PTC Global</h4>
+                                <h4 class="text-lg text-primary mb-4">Moody's Analytics</h4>
                                 <p class="text-gray-400 text-sm">
-                                    Built and deployed scalable microservices and predictive fault detection models. Reduced telemetry latency by 38%, optimized system load handling, and automated CI/CD workflows for faster deployment and recovery.
+                                    Designed a multi-agent orchestration system (LangGraph + AWS Bedrock) where planner, retrieval and analyst agents collaborate via tool use to answer regulatory queries, cutting analyst research time by 60%. Built a production RAG pipeline over 10k+ financial documents with hybrid retrieval and grounding checks that reduced hallucinations by 45%, plus human-in-the-loop guardrails and LLM-as-judge evaluation for safe autonomous execution. Shipped low-latency serving (FastAPI, Redis, streaming) that cut end-to-end agent response latency by 55%.
                                 </p>
                             </div>
                         </div>
@@ -784,11 +897,11 @@
                             <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
                                 <div class="flex flex-col md:flex-row md:items-center mb-4">
                                     <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Feb 2022 - Jan 2024</span>
-                                    <h3 class="text-xl font-semibold font-display">Software Developer</h3>
+                                    <h3 class="text-xl font-semibold font-display">AI/ML Engineer — Applied NLP & Production ML</h3>
                                 </div>
                                 <h4 class="text-lg text-primary mb-4">Cognizant Pvt Ltd.</h4>
                                 <p class="text-gray-400 text-sm">
-                                    Refactored monolithic apps into microservices, increasing deployment velocity by 3x. Developed ML-driven features for customer profiling and reduced API error rates by 45% across production environments.                            </p>
+                                    Fine-tuned BERT and RoBERTa for transaction intent classification across 40+ categories, lifting macro-F1 from 0.78 to 0.92 and retiring a legacy keyword service. Built semantic search over merchant and case records with Sentence-Transformers and ANN indexing (sub-200ms lookups), a LightGBM risk model holding 99.8% precision while cutting false positives 30%, and the serving stack behind them — FastAPI, Redis caching, Docker on ECS at sub-100ms p95. Instrumented drift monitoring and an MLflow retraining workflow that took dataset-to-deployed-model from three weeks to four days.                            </p>
                             </div>
                         </div>
                         
@@ -796,12 +909,12 @@
                         <div class="timeline-item relative pl-8 animate-text animate-delay-3">
                             <div class="bg-dark p-8 rounded-xl border border-gray-800 hover:border-primary/30 transition duration-300 hover-grow">
                                 <div class="flex flex-col md:flex-row md:items-center mb-4">
-                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">2021 - 2022</span>
-                                    <h3 class="text-xl font-semibold font-display">Java Programmer</h3>
+                                    <span class="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mr-4 mb-2 md:mb-0">Mar 2021 - Feb 2022</span>
+                                    <h3 class="text-xl font-semibold font-display">Junior Data Scientist — Academic Analytics</h3>
                                 </div>
                                 <h4 class="text-lg text-primary mb-4">Gandhi Institute of Technology and Management</h4>
                                 <p class="text-gray-400 text-sm">
-                                    Created a real-time exam engine with automated scoring, improving grading turnaround by 30%. Deployed on AWS EC2 with shell-based logging and backup for 99.8% uptime.                            </p>
+                                    Built time-series forecasting models (Prophet, SARIMA) predicting student enrollment and course demand at 87% accuracy, enabling proactive resource planning. Automated ETL across 5+ legacy databases into a unified analytical warehouse, and presented EDA-driven retention insights to academic leadership that shaped two policy changes on at-risk student outreach.                            </p>
                             </div>
                         </div>
                     </div>
@@ -825,7 +938,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-300">Location</h4>
-                                    <p class="text-gray-500">Newyork, US</p>
+                                    <p class="text-gray-500">United States</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -834,7 +947,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-300">Email</h4>
-                                    <p class="text-gray-500">b.harish2727@gmail.com</p>
+                                    <p class="text-gray-500">b.harish2727us@gmail.com</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -863,7 +976,7 @@
                         </div>
                     </div>
                     <div class="md:w-1/2 animate-text animate-delay-2">
-                        <form id="contact-form" class="space-y-6" action="https://formsubmit.co/b.harish2727@gmail.com" method="POST">
+                        <form id="contact-form" class="space-y-6" action="https://formsubmit.co/b.harish2727us@gmail.com" method="POST">
                             <input type="hidden" name="_subject" value="New message from portfolio contact form">
                             <input type="text" name="_honey" class="hidden" style="display:none">
                             <input type="hidden" name="_template" value="table">
@@ -902,7 +1015,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <div class="mb-6 md:mb-0">
                         <h2 class="text-2xl font-bold text-gradient font-display">Harish Bejawada</h2>
-                        <p class="text-gray-500 mt-2 text-sm">Software Engineer</p>
+                        <p class="text-gray-500 mt-2 text-sm">AI/ML Software Engineer</p>
                     </div>
                     <div class="flex space-x-6">
     <!--                     <a href="#" class="text-gray-500 hover:text-primary transition duration-300">
@@ -945,19 +1058,100 @@
             <button id="chatbot-toggle" class="bg-primary text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center hover:bg-primary-light transition-all duration-300 hover:scale-110">
                 <i class="fas fa-robot text-2xl"></i>
             </button>
-            <div id="chatbot-popup" class="absolute bottom-20 right-0 w-80 h-96 rounded-lg shadow-2xl flex flex-col overflow-hidden">
-    <!--         <div id="chatbot-popup" class="hidden absolute bottom-20 right-0 w-80 h-96 rounded-lg shadow-2xl flex flex-col overflow-hidden"> -->
-                <div class="bg-darker p-4 border-b border-gray-700 flex items-center">
+            <div id="chatbot-popup" class="absolute bottom-20 right-0 w-[calc(100vw-3rem)] max-w-[22rem] rounded-xl shadow-2xl flex flex-col overflow-hidden">
+                <div class="bg-darker p-3 border-b border-gray-700 flex items-center">
                     <div class="bg-primary/10 text-primary p-2 rounded-full mr-3">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3 class="font-semibold">Ask Harish's AI</h3>
-                    <button id="close-chatbot" class="ml-auto text-gray-400 hover:text-white">
+                    <h3 class="font-semibold text-sm">Ask Harish's AI</h3>
+                    <button id="toggle-voice" class="ml-auto text-gray-400 hover:text-white mr-3" title="Mute voice" aria-label="Mute voice">
+                        <i class="fas fa-volume-high"></i>
+                    </button>
+                    <button id="close-chatbot" class="text-gray-400 hover:text-white">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                
-                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto text-sm space-y-3">
+
+                <!-- Animated avatar -->
+                <div id="avatar-stage" class="relative flex justify-center overflow-hidden">
+                    <svg id="harish-avatar" viewBox="50 8 120 148" class="w-32 h-40" aria-hidden="true">
+                        <defs>
+                            <clipPath id="mouth-clip">
+                                <ellipse id="mouth-clip-shape" cx="110" cy="116" rx="13" ry="2"></ellipse>
+                            </clipPath>
+                            <radialGradient id="avatar-glow" cx="50%" cy="45%" r="55%">
+                                <stop offset="0%" stop-color="#6366f1" stop-opacity="0.35"></stop>
+                                <stop offset="100%" stop-color="#6366f1" stop-opacity="0"></stop>
+                            </radialGradient>
+                        </defs>
+
+                        <ellipse cx="110" cy="95" rx="95" ry="90" fill="url(#avatar-glow)"></ellipse>
+
+                        <g id="avatar-body">
+                            <!-- shoulders: jacket -->
+                            <path d="M18 190 C22 158 52 143 78 137 L142 137 C168 143 198 158 202 190 Z" fill="#1c2130"></path>
+                            <!-- red polo -->
+                            <path d="M84 138 L110 176 L136 138 L124 133 L110 148 L96 133 Z" fill="#d92b3a"></path>
+                            <path d="M96 133 L110 148 L124 133 L118 130 L110 138 L102 130 Z" fill="#b31f2c"></path>
+                            <!-- neck -->
+                            <path d="M94 108 L126 108 L126 134 C126 141 94 141 94 134 Z" fill="#8a5a37"></path>
+                        </g>
+
+                        <g id="avatar-head">
+                            <!-- ears -->
+                            <ellipse cx="70" cy="88" rx="7" ry="10" fill="#a86b41"></ellipse>
+                            <ellipse cx="150" cy="88" rx="7" ry="10" fill="#a86b41"></ellipse>
+                            <!-- face -->
+                            <path d="M74 66 C74 40 90 28 110 28 C130 28 146 40 146 66 L146 88 C146 112 132 124 110 124 C88 124 74 112 74 88 Z" fill="#b0754a"></path>
+                            <!-- beard -->
+                            <path d="M76 84 C76 112 90 124 110 124 C130 124 144 112 144 84 C144 104 132 110 110 110 C88 110 76 104 76 84 Z" fill="#1a1418"></path>
+                            <path d="M97 108 C101 104 119 104 123 108 C119 114 101 114 97 108 Z" fill="#1a1418"></path>
+                            <!-- sideburns -->
+                            <path d="M74 60 L82 60 C82 76 82 88 80 94 L74 90 Z" fill="#16121a"></path>
+                            <path d="M146 60 L138 60 C138 76 138 88 140 94 L146 90 Z" fill="#16121a"></path>
+                            <!-- hair -->
+                            <path d="M72 74 C68 44 84 24 110 24 C136 24 152 42 148 72 C144 56 136 48 122 46 C112 56 92 56 84 48 C76 54 73 62 72 74 Z" fill="#16121a"></path>
+                            <path d="M96 28 C104 12 138 14 148 32 C152 40 150 50 148 56 C146 40 132 28 112 30 Z" fill="#16121a"></path>
+                            <path d="M118 22 C132 18 144 26 148 38 C140 28 130 24 118 26 Z" fill="#241d29"></path>
+                            <!-- brows -->
+                            <g id="avatar-brows">
+                                <path d="M84 72 C90 67 102 67 107 71" stroke="#16121a" stroke-width="5" stroke-linecap="round" fill="none"></path>
+                                <path d="M113 71 C118 67 130 67 136 72" stroke="#16121a" stroke-width="5" stroke-linecap="round" fill="none"></path>
+                            </g>
+                            <!-- eyes -->
+                            <g class="eye-group" id="eye-left">
+                                <ellipse cx="95" cy="84" rx="7.6" ry="5.2" fill="#fdfbf7"></ellipse>
+                                <circle class="pupil" cx="95" cy="84" r="3.9" fill="#241a12"></circle>
+                                <circle cx="96.5" cy="82.4" r="1.1" fill="#ffffff" opacity="0.8"></circle>
+                                <path d="M87.6 81.4 C91 77.6 99 77.6 102.4 81.4" stroke="#3a2a1e" stroke-width="1.7" stroke-linecap="round" fill="none"></path>
+                            </g>
+                            <g class="eye-group" id="eye-right">
+                                <ellipse cx="125" cy="84" rx="7.6" ry="5.2" fill="#fdfbf7"></ellipse>
+                                <circle class="pupil" cx="125" cy="84" r="3.9" fill="#241a12"></circle>
+                                <circle cx="126.5" cy="82.4" r="1.1" fill="#ffffff" opacity="0.8"></circle>
+                                <path d="M117.6 81.4 C121 77.6 129 77.6 132.4 81.4" stroke="#3a2a1e" stroke-width="1.7" stroke-linecap="round" fill="none"></path>
+                            </g>
+                            <!-- nose -->
+                            <path d="M110 87 L105.5 99 C108 101.5 112 101.5 114.5 99" stroke="#95633c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                            <circle cx="106" cy="101" r="1.2" fill="#7d4f2e"></circle>
+                            <circle cx="114" cy="101" r="1.2" fill="#7d4f2e"></circle>
+                            <!-- mouth -->
+                            <g id="avatar-mouth">
+                                <ellipse id="mouth-shape" cx="110" cy="116" rx="13" ry="2" fill="#43121a"></ellipse>
+                                <g clip-path="url(#mouth-clip)">
+                                    <rect x="95" y="107" width="30" height="5" fill="#f7f2ee"></rect>
+                                    <ellipse cx="110" cy="126" rx="8" ry="5" fill="#c4536a"></ellipse>
+                                </g>
+                                <path id="mouth-line" d="M97 115 C103 119 117 119 123 115" stroke="#5a2028" stroke-width="2" stroke-linecap="round" fill="none"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <div id="avatar-thinking" class="absolute top-3 right-6 hidden">
+                        <span class="think-dot"></span><span class="think-dot"></span><span class="think-dot"></span>
+                    </div>
+                </div>
+
+                <div id="chat-messages" class="h-52 p-4 overflow-y-auto text-sm space-y-3">
                     <div class="bot-message rounded-lg p-3 max-w-[80%]">
                         <p>Hi! I'm Harish's AI assistant. Ask me anything about his skills, experience, or projects.</p>
                     </div>

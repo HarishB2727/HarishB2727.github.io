@@ -156,7 +156,7 @@ if (contactForm) {
     if (statusEl) statusEl.classList.add('hidden');
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/b.harish2727@gmail.com', {
+      const response = await fetch('https://formsubmit.co/ajax/b.harish2727us@gmail.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -210,36 +210,92 @@ const chatMessages = document.getElementById('chat-messages');
 // Toggle chatbot visibility
 chatbotToggle.addEventListener('click', () => {
     chatbotPopup.classList.toggle('hidden');
+    Avatar.prime();
+    if (chatbotPopup.classList.contains('hidden')) Avatar.stop();
 });
 
 closeChatbot.addEventListener('click', () => {
     chatbotPopup.classList.add('hidden');
+    Avatar.stop();
 });
 
-// System prompt about Harish
+// System prompt about Harish — kept in sync with the resume
 const systemPrompt = `
-    You are Harish Bejawada's personal AI assistant. Answer all questions specifically about Harish using the following information:
-    
-    - Full Name: Harish Bejawada
-    - Current Role: Software Engineer at PTC Global (since Jan 2025)
-    - Previous Experience: 
-      * Software Developer at Cognizant Pvt Ltd (Feb 2022-Jan 2024)
-      * Java Programmer at Gandhi Institute of Technology and Management (2021-2022)
-    - Skills: JavaScript/TypeScript (92%), React/Next.js (88%), Node.js/Express (85%), GraphQL/REST (83%)
-    - Education: Bachelor's in Computer Science
-    - Location: New York, US
-    - Email: b.harish2727@gmail.com
-    - Phone: +1 (716) 335-1329
-    - Key Achievements:
-      * Reduced telemetry latency by 38% at PTC Global
-      * Refactored monolithic apps into microservices (3x faster deployment)
-      * Created real-time exam engine with 99.8% uptime
-    - friends:
-        keerthana
-        rama- he is akhila's boy friend
-    Always respond in first-person as if you are Harish (use "I" and "my"). Be professional but friendly.
-    If asked why someone should hire you, highlight your problem-solving skills and technical expertise.
-    and also always give short and crispy answers not lenghty responses
+You are Harish Bejawada's personal AI assistant on his portfolio site. Answer questions about Harish
+using only the information below. If you don't know something, say so and point the visitor to his email.
+
+PROFILE
+- Full Name: Harish Bejawada
+- Target Role: AI/ML Software Engineer / AI Agent Engineer
+- Location: United States
+- Email: b.harish2727us@gmail.com
+- Phone: +1 (716) 335-1329
+- LinkedIn: linkedin.com/in/harish-bejawada  |  GitHub: github.com/HarishB2727
+
+SUMMARY
+3+ years designing and deploying agent-based systems using LLMs, tools, memory and planning for
+enterprise automation. Expertise in workflow orchestration, multi-step workflows, RAG pipelines and
+human-in-the-loop safety patterns, with production systems measured on accuracy, reliability and task
+success. Python, LangChain/LangGraph, Semantic Kernel, vector databases and evaluation frameworks.
+
+EXPERIENCE
+1) Moody's Analytics — Software Engineer, AI-Driven Financial Intelligence Platform (Nov 2025 – Present, US)
+   - Multi-agent orchestration with LangGraph + AWS Bedrock (Claude): planner, retrieval and analyst
+     agents collaborating via tool use / function calling; cut analyst research time by 60%.
+   - Production RAG with LlamaIndex, FAISS and hybrid (semantic + BM25) retrieval over 10k+ regulatory
+     documents, with citations and grounding checks; hallucination rate down 45%.
+   - Human-in-the-loop guardrails and evaluation (LLM-as-judge, golden datasets, trajectory scoring)
+     with approval workflows for high-risk actions.
+   - Took 3 agentic use cases from prototype to production in under 8 weeks each with client teams.
+   - MLOps/LLMOps on SageMaker Pipelines + MLflow (retraining, prompt/version management, A/B testing);
+     deployment drift incidents down 70%.
+   - Low-latency serving (FastAPI, Redis feature store, streaming); end-to-end agent latency down 55%.
+2) Cognizant Pvt Ltd — AI/ML Engineer, Applied NLP & Production ML (Feb 2022 – Jan 2024, India)
+   - Fine-tuned BERT/RoBERTa for intent classification across 40+ categories; macro-F1 0.78 -> 0.92.
+   - Semantic search with Sentence-Transformers + ANN indexing; sub-200ms case lookup.
+   - Document understanding pipeline (OCR, layout-aware parsing, NER) automating ~4k documents/week.
+   - LightGBM risk scoring on 200+ features at 99.8% precision; analyst false positives down 30%.
+   - Serving stack: FastAPI, Redis caching, Docker on AWS ECS; sub-100ms p95 over 10k+ daily requests.
+   - Drift/performance monitoring (Evidently, Plotly Dash) and MLflow retraining workflow that cut
+     dataset-to-deployed-model from three weeks to four days.
+3) Gandhi Institute of Technology and Management — Junior Data Scientist (Mar 2021 – Feb 2022, India)
+   - Enrollment and course-demand forecasting (Prophet, SARIMA) at 87% accuracy.
+   - Automated ETL across 5+ legacy databases into a unified analytical warehouse.
+   - EDA-driven retention insights presented to leadership; shaped two outreach policy changes.
+
+PROJECTS
+- Autonomous Multi-Agent Document Intelligence System (LangGraph, FAISS, Claude API, AWS): router,
+  retriever, analyst and critique agents over 5k+ PDFs; hybrid search + reranking improved relevance
+  30%; hallucinations down 45%; Streamlit UI on Lambda + API Gateway.
+- Enterprise Workflow Automation Agent (LangChain, FastAPI, PostgreSQL, Docker/Kubernetes): multi-step
+  orchestration across enterprise APIs; manual task time down 50%; human-in-the-loop approvals;
+  94% task completion across 200+ evaluated scenarios; 10k+ daily API calls at 99.9% uptime.
+- RAG-Powered Knowledge Assistant (Pinecone, OpenAI API, FastAPI, Streamlit): 50k+ documents with
+  cited answers; query rewriting + reranking improved accuracy 35%; memory lifted follow-up success 28%.
+
+SKILLS
+- Agentic AI & LLMs: LangGraph, LangChain, Semantic Kernel, LlamaIndex, function calling / tool use,
+  MCP, multi-agent orchestration, planning, memory, prompt engineering, RAG, agent evals
+  (LLM-as-judge), guardrails, human-in-the-loop, OpenAI & Anthropic APIs, AWS Bedrock.
+- AI & ML: PyTorch, TensorFlow, Scikit-learn, Hugging Face Transformers, XGBoost, LightGBM, NLP,
+  time-series, anomaly detection, applied generative AI.
+- MLOps & Big Data: SageMaker, MLflow, Kubeflow, PySpark, Docker, Kubernetes, GitHub Actions,
+  A/B testing, drift monitoring.
+- Vector DBs & Search: FAISS, Pinecone, Weaviate, Elasticsearch, Redis (vector), hybrid search.
+- Languages: Python, SQL, TypeScript, Java, JavaScript, Bash.
+- Backend & APIs: FastAPI, Node.js, REST, GraphQL, WebSockets, streaming/SSE.
+- Cloud & DevOps: AWS (EC2, S3, Lambda, RDS, Bedrock, ECS), GCP, Terraform, Jenkins.
+- Databases: PostgreSQL, MySQL, MongoDB, Redshift.
+
+EDUCATION
+- University at Buffalo, SUNY — M.S. in Industrial Engineering, Data Analytics (Jan 2024 – Apr 2025), Buffalo, NY.
+
+STYLE
+- Always answer in first person as Harish ("I", "my"). Professional but friendly.
+- Keep answers short and crisp — two or three sentences unless asked for detail.
+- If asked why someone should hire me, lead with agentic AI systems shipped to production, evaluation
+  and reliability discipline, and taking prototypes to production fast.
+- Never invent employers, dates, metrics or technologies that aren't listed above.
 `;
 
 // Show chatbot popup after page loads
@@ -435,45 +491,233 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(loadJobs, 5 * 60 * 1000);
 });
 
+/* ------------------------------------------------------------------
+   Talking avatar: SVG character that blinks, tracks the cursor, and
+   moves its mouth while the browser's speech synthesis reads out the
+   assistant's reply. No server, no libraries — works on static hosting.
+------------------------------------------------------------------- */
+const Avatar = (function () {
+    const svg = document.getElementById('harish-avatar');
+    if (!svg) return { speak() {}, stop() {}, think() {}, idle() {}, isVoiceOn: () => false, toggleVoice() {} };
+
+    const mouth = document.getElementById('mouth-shape');
+    const mouthClip = document.getElementById('mouth-clip-shape');
+    const mouthLine = document.getElementById('mouth-line');
+    const eyes = [document.getElementById('eye-left'), document.getElementById('eye-right')];
+    const pupils = svg.querySelectorAll('.pupil');
+    const thinkingDots = document.getElementById('avatar-thinking');
+
+    const supportsSpeech = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+    let voiceOn = localStorage.getItem('harish-voice') !== 'off';
+    let amplitude = 0;
+    let mouthTimer = null;
+    let primed = false;
+
+    // --- idle life: blinking ---
+    function blink() {
+        eyes.forEach(eye => eye && eye.classList.add('blink'));
+        setTimeout(() => eyes.forEach(eye => eye && eye.classList.remove('blink')), 120);
+        setTimeout(blink, 2200 + Math.random() * 3800);
+    }
+    setTimeout(blink, 1500);
+
+    // --- eyes follow the cursor a little ---
+    document.addEventListener('mousemove', (e) => {
+        const box = svg.getBoundingClientRect();
+        if (!box.width) return;
+        const dx = Math.max(-1, Math.min(1, (e.clientX - (box.left + box.width / 2)) / (box.width * 1.5)));
+        const dy = Math.max(-1, Math.min(1, (e.clientY - (box.top + box.height / 2)) / (box.height * 1.5)));
+        pupils.forEach(p => { p.style.transform = `translate(${dx * 2.2}px, ${dy * 1.8}px)`; });
+    });
+
+    // --- mouth ---
+    function setMouth(openness) {
+        const ry = 1.2 + openness * 8;
+        const rx = 12 + openness * 3;
+        mouth.setAttribute('ry', ry.toFixed(2));
+        mouth.setAttribute('rx', rx.toFixed(2));
+        mouthClip.setAttribute('ry', ry.toFixed(2));
+        mouthClip.setAttribute('rx', rx.toFixed(2));
+        mouthLine.style.opacity = openness > 0.15 ? '0' : '1';
+    }
+
+    function startMouth() {
+        svg.classList.add('is-speaking');
+        if (mouthTimer) return;
+        let tick = 0;
+        mouthTimer = setInterval(() => {
+            // WebKit never fires boundary events, so the mouth runs on its own
+            // syllable-ish oscillator and stops when synthesis stops.
+            if (supportsSpeech && !window.speechSynthesis.speaking) { stopMouth(); return; }
+            tick += 1;
+            const syllable = Math.abs(Math.sin(tick * 0.95)) * 0.75 + Math.random() * 0.3;
+            const beat = Math.random() < 0.09 ? 0 : 1; // occasional closed beat, like a pause
+            amplitude = Math.max(amplitude * 0.45, syllable * beat);
+            setMouth(Math.min(1, amplitude));
+        }, 80);
+    }
+
+    function stopMouth() {
+        clearInterval(mouthTimer);
+        mouthTimer = null;
+        amplitude = 0;
+        svg.classList.remove('is-speaking');
+        setMouth(0);
+    }
+
+    // --- voice ---
+    let cachedVoice = null;
+    function pickVoice() {
+        if (cachedVoice) return cachedVoice;
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices.length) return null;
+        // Rishi is the en-IN male voice on Apple devices — closest to how Harish sounds
+        const preferred = ['Rishi', 'Google UK English Male', 'Microsoft Ravi', 'Microsoft Guy', 'Google US English', 'Daniel', 'Alex'];
+        for (const name of preferred) {
+            const match = voices.find(v => v.name.includes(name));
+            if (match) { cachedVoice = match; return match; }
+        }
+        cachedVoice = voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
+        return cachedVoice;
+    }
+    if (supportsSpeech) window.speechSynthesis.onvoiceschanged = () => { cachedVoice = null; pickVoice(); };
+
+    // Safari/iOS only allow speech that follows a user gesture — warm it up on
+    // the first interaction so the reply can speak on its own.
+    function prime() {
+        if (primed || !supportsSpeech) return;
+        primed = true;
+        const warmup = new SpeechSynthesisUtterance('');
+        warmup.volume = 0;
+        window.speechSynthesis.speak(warmup);
+    }
+
+    function cleanForSpeech(text) {
+        return text
+            .replace(/\*\*|__|[*_`#>]/g, '')
+            .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function speak(text) {
+        idle();
+        if (!supportsSpeech || !voiceOn) return;
+        const spoken = cleanForSpeech(text);
+        if (!spoken) return;
+
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(spoken);
+        const voice = pickVoice();
+        if (voice) utterance.voice = voice;
+        utterance.rate = 1.03;
+        utterance.pitch = 0.95;
+
+        utterance.onstart = () => { amplitude = 1; startMouth(); };
+        // Where word boundaries are supported they accent the mouth on each word
+        utterance.onboundary = () => { amplitude = 0.8 + Math.random() * 0.3; };
+        utterance.onend = stopMouth;
+        utterance.onerror = stopMouth;
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function stop() {
+        if (supportsSpeech) window.speechSynthesis.cancel();
+        stopMouth();
+    }
+
+    function think() {
+        svg.classList.add('is-thinking');
+        if (thinkingDots) thinkingDots.classList.remove('hidden');
+        pupils.forEach(p => { p.style.transform = 'translate(-1.5px, -2.5px)'; });
+    }
+
+    function idle() {
+        svg.classList.remove('is-thinking');
+        if (thinkingDots) thinkingDots.classList.add('hidden');
+        pupils.forEach(p => { p.style.transform = 'translate(0, 0)'; });
+    }
+
+    function toggleVoice() {
+        voiceOn = !voiceOn;
+        localStorage.setItem('harish-voice', voiceOn ? 'on' : 'off');
+        if (!voiceOn) stop();
+        return voiceOn;
+    }
+
+    return { speak, stop, think, idle, prime, toggleVoice, isVoiceOn: () => voiceOn, supported: supportsSpeech };
+})();
+
+// Voice on/off button in the chat header
+const voiceButton = document.getElementById('toggle-voice');
+if (voiceButton) {
+    const renderVoiceButton = (on) => {
+        voiceButton.innerHTML = `<i class="fas ${on ? 'fa-volume-high' : 'fa-volume-xmark'}"></i>`;
+        voiceButton.title = on ? 'Mute voice' : 'Unmute voice';
+        voiceButton.setAttribute('aria-label', voiceButton.title);
+    };
+    renderVoiceButton(Avatar.isVoiceOn());
+    voiceButton.addEventListener('click', () => renderVoiceButton(Avatar.toggleVoice()));
+}
+
+// Running conversation, so follow-up questions have context
+const chatHistory = [];
+const MAX_HISTORY_TURNS = 8;
+
 // Send message function
 async function sendChatMessage() {
     const message = userMessage.value.trim();
     if (!message) return;
 
+    Avatar.prime();
+    Avatar.stop();
+
+    const endpoint = window.SITE_CONFIG && window.SITE_CONFIG.chatEndpoint;
+    if (!endpoint) {
+        addMessage("The assistant isn't configured yet. Email me at b.harish2727us@gmail.com.", 'bot');
+        return;
+    }
+
     // Add user message to chat
     addMessage(message, 'user');
     userMessage.value = '';
+    chatHistory.push({ role: 'user', content: message });
 
     // Show "typing" indicator
     const typingIndicator = addMessage('Typing...', 'bot', true);
+    Avatar.think();
 
     try {
-        // Call DeepSeek API
-        const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+        // Call the chat proxy — the API key lives there, never in the browser
+        const response = await fetch(endpoint, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${"sk-8376334f0a034641bbfe3f27dbe125c4"}` // Replace with your actual API key
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                model: "deepseek-chat",
                 messages: [
                     { role: "system", content: systemPrompt },
-                    { role: "user", content: message }
-                ],
-                temperature: 0.7
+                    ...chatHistory.slice(-MAX_HISTORY_TURNS * 2)
+                ]
             })
         });
 
+        if (!response.ok) throw new Error(`Chat proxy returned ${response.status}`);
+
         const data = await response.json();
-        const aiResponse = data.choices[0].message.content;
+        const aiResponse = data.choices && data.choices[0] && data.choices[0].message.content;
+        if (!aiResponse) throw new Error("Empty response from chat proxy");
+
+        chatHistory.push({ role: 'assistant', content: aiResponse });
 
         // Replace typing indicator with actual response
         typingIndicator.remove();
         addMessage(aiResponse, 'bot');
+        Avatar.speak(aiResponse);
 
     } catch (error) {
         typingIndicator.remove();
+        chatHistory.pop();
+        Avatar.idle();
         const errorDiv = addMessage("Sorry, I couldn't process your request. Please try again.", 'bot');
         errorDiv.firstChild.classList.add('error-message');
         console.error("API Error:", error);
@@ -493,7 +737,7 @@ function addMessage(content, sender, isTemporary = false) {
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    return isTemporary ? messageDiv : null;
+    return messageDiv;
 }
 
 // Event listeners
