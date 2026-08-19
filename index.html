@@ -1008,7 +1008,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <p class="text-gray-400 mb-4">Router, retriever, analyst and critique agents that autonomously ingest and index 5k+ PDFs and answer cross-document questions with cited sources. Hybrid search with reranking lifted retrieval relevance 30%; grounding checks cut hallucinations 45%.</p>
+                            <p class="text-gray-400 mb-4">Four agents — router, retriever, analyst, critique — answering questions across a PDF corpus with page-level citations. The router decomposes cross-document questions before retrieval; hybrid dense + BM25 search with cross-encoder reranking keeps exact identifiers findable alongside paraphrase. A critique agent verifies every draft against its sources in a fresh context before it ships.</p>
                             <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">LangGraph</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">FAISS</span>
@@ -1031,7 +1031,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <p class="text-gray-400 mb-4">An agent that orchestrates multi-step processes across enterprise APIs, cutting manual task time by 50%. Human-in-the-loop approval on critical actions, evaluated across 200+ scenarios at a 94% task completion rate.</p>
+                            <p class="text-gray-400 mb-4">Turns a goal in plain English into a validated plan, then executes it across enterprise APIs with durable human-in-the-loop approval gates. Risk is declared by each connector rather than judged by the agent, so nothing irreversible runs unreviewed. Run state lives in Postgres, so a run parks at a gate, survives a deploy, and resumes — and every step is idempotent.</p>
                             <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">LangChain</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">FastAPI</span>
@@ -1054,7 +1054,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <p class="text-gray-400 mb-4">A RAG assistant answering questions across 50k+ internal documents with citations. Query rewriting and reranking improved answer accuracy 35%; conversation memory lifted follow-up task success 28%.</p>
+                            <p class="text-gray-400 mb-4">Multi-step retrieval over a document corpus. Questions are rewritten against the conversation so elliptical follow-ups like “what about enterprise?” resolve into something searchable, then fanned out into several queries, fused, and reranked on whether a passage answers the question — not just whether it is on topic. Streamlit UI with a live retrieval-quality dashboard.</p>
                             <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">Pinecone</span>
                             <span class="px-3 py-1 text-sm rounded-full bg-indigo-500/10 text-indigo-300">OpenAI API</span>
